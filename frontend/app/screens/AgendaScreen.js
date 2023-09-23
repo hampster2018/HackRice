@@ -13,7 +13,6 @@ const AgendaScreen = () => {
         "https://highly-boss-dodo.ngrok-free.app/get_events"
       );
       const data = await response.json();
-      console.log(data);
       const eventsByDate = data.reduce((acc, event) => {
         const date = event.date;
         if (!acc[date]) {
@@ -22,7 +21,6 @@ const AgendaScreen = () => {
         acc[date].push(event);
         return acc;
       }, {});
-      console.log(eventsByDate);
       setItems(eventsByDate);
     }
     fetchData();
@@ -36,15 +34,12 @@ const AgendaScreen = () => {
     );
   }
 
-  console.log(items);
-
   return (
     <View style={{ flex: 1 }}>
       <Agenda
         selected="2023-09-23"
         items={items}
         renderItem={(item, isFirst) => {
-          console.log(item);
           const startTime = moment(item.start_time, "HH:mm");
           const endTime = moment(item.end_time, "HH:mm");
           const duration = moment.duration(endTime.diff(startTime));
