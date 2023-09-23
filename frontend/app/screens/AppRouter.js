@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Text, View } from "react-native";
 import { useSelector } from "react-redux";
+import CalendarScreen from "./AgendaScreen";
 
 // Sample Components
 
@@ -12,14 +13,6 @@ const Home = () => {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Welcome, {email}!</Text>
-    </View>
-  );
-};
-
-const Calendar = () => {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Calendar Screen</Text>
     </View>
   );
 };
@@ -40,7 +33,7 @@ const AppRouter = () => {
   return (
     <Drawer.Navigator initialRouteName="Home">
       <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Calendar" component={Calendar} />
+      <Drawer.Screen name="Calendar" component={CalendarScreen} />
       <Drawer.Screen name="Leaderboard" component={Leaderboard} />
     </Drawer.Navigator>
   );
