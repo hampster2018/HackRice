@@ -28,7 +28,13 @@ class Event:
 class EventEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Event):
-            return {"name": obj.name, "date": obj.date}
+            return {
+                "event_name": obj.event_name,
+                "event_description": obj.event_description,
+                "start_time": obj.start_time,
+                "end_time": obj.end_time,
+                "date": obj.date,
+            }
         return super().default(obj)
 
 
