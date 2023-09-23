@@ -20,7 +20,14 @@ app.config["DATABASE"] = "./backend_database.db"
 
 class Event:
     def __init__(
-        self, event_name, event_description, start_time, end_time, date, carbon_points
+        self,
+        event_name,
+        event_description,
+        start_time,
+        end_time,
+        date,
+        carbon_points,
+        completed,
     ) -> None:
         self.event_name = event_name
         self.event_description = event_description
@@ -28,6 +35,7 @@ class Event:
         self.end_time = end_time
         self.date = date
         self.carbon_points = carbon_points
+        self.completed = completed
 
 
 class EventEncoder(json.JSONEncoder):
@@ -40,6 +48,7 @@ class EventEncoder(json.JSONEncoder):
                 "end_time": obj.end_time,
                 "date": obj.date,
                 "carbon_points": obj.carbon_points,
+                "completed": obj.completed,
             }
         return super().default(obj)
 
@@ -92,6 +101,7 @@ def transcribe_schedule():
                 event["military_end_time"],
                 time.strftime("%Y-%m-%d"),
                 event["carbon_points"],
+                False,
             )
         )
 
@@ -110,7 +120,7 @@ def add_event_sql():
 
     cur = get_db().cursor()
     cur.execute(
-        "INSERT INTO events (user_id, name, description, start_time, end_time, date, carbon_points) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO events (user_id, name, description, start_time, end_time, date, carbon_points, completed) VALUES (?, ?, ?, ?, ?, ?, ?, 0)",
         (
             user_id,
             event_name,
@@ -151,6 +161,7 @@ def get_events(user_id):
             event[4],
             event[5],
             event[7],
+            event[8],
         )
         for event in events
     ]
@@ -171,7 +182,6 @@ def delete_event_sql():
     return f"Event '{event_name}' deleted."
 
 
-# TODO: make this dynamic
 @app.route("/set_points", methods=["POST"])
 def set_points_sql():
     my_points = request.form["points"]
@@ -313,3 +323,61 @@ def get_group_leaderboard(group_id, user_id):
         if user_position > 10:
             output.append(user)
     return json.dumps(output)
+
+
+@app.route("/update_event", methods=["POST"])
+def update_event():
+    event_name = request.form["event_name"]
+    event_new_name = request.form["event_new_name"]
+    event_description = request.form["event_description"]
+    start_time = request.form["start_time"]
+    end_time = request.form["end_time"]
+    date = request.form["date"]
+    carbon_points = request.form["carbon_points"]
+    completed = request.form["completed"]
+    user_id = request.form["user_id"]
+
+    cur = get_db().cursor()
+    cur.execute(
+        "UPDATE events SET name = ?, description = ?, start_time = ?, end_time = ?, date = ?, carbon_points = ?, completed = ? WHERE name = ? AND user_id = ?",
+        (
+            event_new_name,
+            event_description,
+            start_time,
+            end_time,
+            date,
+            carbon_points,
+            event_name,
+            completed,
+            user_id,
+        ),
+    )
+    get_db().commit()
+
+    return f"Event '{event_name}' updated to '{event_new_name}'."
+
+
+@app.route("/complete_event", methods=["POST"])
+def complete_event():
+    event_name = request.form["event_name"]
+    completed = request.form["completed"]
+    user_id = request.form["user_id"]
+
+    cur = get_db().cursor()
+    cur.execute(
+        "UPDATE events SET completed = ? WHERE name = ? AND user_id = ?",
+        (completed, event_name, user_id),
+    )
+    get_db().commit()
+
+    return f"Event '{event_name}' set to {completed}."
+
+
+@app.route("/get_userid/<email>", methods=["GET"])
+def get_userid(email):
+    # edit the email to escape the @ symbol
+    cur = get_db().cursor()
+    replaced_email = email
+    cur.execute(f"SELECT id FROM users WHERE email = ?", [replaced_email])
+    output = cur.fetchone()[0]
+    return f"{output}"

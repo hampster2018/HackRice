@@ -1,23 +1,23 @@
 INSERT INTO users
-	(name, points)
+	(name, points, email)
 VALUES
-	('John Doe', 1),
-	('AJ Soud', 200),
-	('Zain Adil', 50),
-	('Syed Husain', 300),
-	('Jun Too', 75),
-	('Robert Chadwick', 150),
-	('Sneha Poddar', 25),
-	('Zohaib Imam', 250),
-	('Isabel Zhao', 175),
-	('John Coleman', 125),
-	('Kareem El-Sadi', 125),
-	('Austin Sun', 275),
-	('Karan Gupta', 10),
-	('Michael Mancuso', 80),
-	('Nicolae Sapoval', 90),
-	('Wil Thomason', 70),
-	('Deepsh Jain', 60);
+	('John Doe', 1, 'johndoe@example.com'),
+	('AJ Soud', 200, 'ajsoud@example.com'),
+	('Zain Adil', 50, 'zainadil@example.com'),
+	('Syed Husain', 300, 'syedhusain@example.com'),
+	('Jun Too', 75, 'juntoo@example.com'),
+	('Robert Chadwick', 150, 'robertchadwick@example.com'),
+	('Sneha Poddar', 25, 'snehapoddar@example.com'),
+	('Zohaib Imam', 250, 'zohaibimam@example.com'),
+	('Isabel Zhao', 175, 'isabelzhao@example.com'),
+	('John Coleman', 125, 'johncoleman@example.com'),
+	('Kareem El-Sadi', 125, 'kareemelsadi@example.com'),
+	('Austin Sun', 275, 'austinsun@example.com'),
+	('Karan Gupta', 10, 'karangupta@example.com'),
+	('Michael Mancuso', 80, 'michaelmancuso@example.com'),
+	('Nicolae Sapoval', 90, 'nicolaesapoval@example.com'),
+	('Wil Thomason', 70, 'wilthomason@example.com'),
+	('Deepsh Jain', 60, 'deepshjain@example.com');
 
 
 INSERT INTO events
@@ -57,4 +57,10 @@ VALUES
 	(2, 1),
 	(3, 2),
 	(4, 1),
-	(4, 2);
+	(4, 2),
+	(8, 1),
+	(9, 1),
+	(10, 1),
+	(11, 2),
+	(12, 2),
+	(13, 2);
