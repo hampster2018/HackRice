@@ -13,13 +13,13 @@ const Event = ({ route, navigation }) => {
     numMinutes += 60;
   }
   let timeString = "";
-  if (numHours != 0) {
+  if (numHours !== 0) {
     timeString += numHours + "h ";
   }
-  if (numMinutes != 0) {
+  if (numMinutes !== 0) {
     timeString += numMinutes + "m";
   }
-  if (timeString == "") {
+  if (timeString === "") {
     timeString = "0m";
   }
 

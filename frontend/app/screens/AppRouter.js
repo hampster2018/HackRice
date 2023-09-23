@@ -1,6 +1,6 @@
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import React from "react";
+import { AntDesign } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import React from "react";
 import { Text, View } from "react-native";
 import { useSelector } from "react-redux";
 
@@ -55,7 +55,7 @@ const AppRouter = () => {
         component={Leaderboard}
         options={{
           drawerIcon: ({ color, size }) => (
-            <MaterialIcons name="leaderboard" size={24} color="black" />
+            <AntDesign name="barschart" size={size} color={color} />
           ),
         }}
       />
