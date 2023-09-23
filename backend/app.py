@@ -56,6 +56,8 @@ events: List[Event] = [
     ),
 ]
 
+my_points = 0
+
 
 @app.route("/test")
 def test():
@@ -113,3 +115,15 @@ def delete_event():
             events.remove(event)
             return f"Event '{event_name}' deleted."
     return f"Event '{event_name}' not found."
+
+
+@app.route("/set_points", methods=["POST"])
+def set_points():
+    global my_points
+    my_points = request.form["points"]
+    return f"Set points to {my_points}."
+
+
+@app.route("/get_points", methods=["GET"])
+def get_points():
+    return f"{my_points}"
