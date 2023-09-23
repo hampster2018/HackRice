@@ -1,8 +1,8 @@
 import moment from "moment/moment";
 import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { Agenda } from "react-native-calendars";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { StyleSheet, Text, View } from "react-native";
 
 const AgendaScreen = () => {
   const [items, setItems] = React.useState({});

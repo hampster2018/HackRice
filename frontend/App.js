@@ -1,9 +1,6 @@
-import { StyleSheet } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import LoginView from "./app/screens/Login.js";
-import AppRouter from "./app/screens/AppRouter.js";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider } from "react-redux";
 import store from "./app/redux/Store.js";
 import Event from "./app/screens/Event.js";
@@ -45,12 +42,3 @@ function App() {
 }
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

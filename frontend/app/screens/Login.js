@@ -1,15 +1,15 @@
+import { AntDesign } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
-  View,
+  Keyboard,
+  SafeAreaView,
+  StyleSheet,
   Text,
   TextInput,
-  StyleSheet,
-  SafeAreaView,
-  Button,
   TouchableWithoutFeedback,
-  Keyboard,
 } from "react-native";
 import { useDispatch } from "react-redux";
+
 import { setEmail } from "../reducers/UserReducer";
 
 const LoginView = ({ navigation }) => {
@@ -35,9 +35,7 @@ const LoginView = ({ navigation }) => {
           onChangeText={(text) => setEmailValue(text)}
           value={emailValue}
         />
-        <View style={styles.buttonContainer}>
-          <Button title="Login" onPress={handleLogin} />
-        </View>
+        <AntDesign name="login" size={24} color="black" onPress={handleLogin} />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -50,6 +48,12 @@ const styles = StyleSheet.create({
     justifyContent: "center", // Vertically center contents
     alignItems: "center", // Horizontally center contents
     backgroundColor: "#ffffff",
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
   },
   title: {
     fontSize: 24,
