@@ -59,7 +59,7 @@ events: List[Event] = [
 my_points = 0
 
 
-@app.route("/test")
+@app.route("/")
 def test():
     return "Hello World"
 
