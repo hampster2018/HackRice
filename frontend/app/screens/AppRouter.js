@@ -1,5 +1,4 @@
 import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Text, View } from "react-native";
 import { useSelector } from "react-redux";
@@ -27,7 +26,6 @@ const Leaderboard = () => {
 
 // App Router using Stack Navigator
 const Drawer = createDrawerNavigator();
-const Stack = createNativeStackNavigator();
 
 const AppRouter = () => {
   return (
