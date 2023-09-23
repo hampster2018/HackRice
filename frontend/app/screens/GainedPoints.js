@@ -1,52 +1,70 @@
+import LottieView from "lottie-react-native";
 import React, { useEffect, useRef } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
-import LottieView from 'lottie-react-native';
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
-function GainedPoints({route, navigation}) {
-    const animation = useRef(null);
+function GainedPoints({ route, navigation }) {
+  const animation = useRef(null);
 
-    useEffect(() => {
-        //animation.current?.play();
-    }, []);
-    
-    return (
-        <View style={styles.container}>
-            <Pressable onPress={() => navigation.navigate('Events')}>
-                <View style={styles.animationContainer}>
-                    <LottieView
-                        autoPlay
-                        ref={animation}
-                        style={styles.lottie}
-                        source={require('../../assets/GainedPointsAnimation.json')}
-                    />
-                </View>
-            </Pressable>
-        </View>
-        
-    )
+  const gainedPoints = route.params.points;
+
+  useEffect(() => {
+    //animation.current?.play();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.animationContainer}>
+        <Pressable
+          onPress={() =>
+            navigation.navigate("Calendar", {
+              event: route.params.event,
+              completed: true,
+            })
+          }
+        >
+          <LottieView
+            autoPlay
+            ref={animation}
+            style={styles.lottie}
+            source={require("../../assets/GainedPointsAnimation.json")}
+          />
+          <View style={styles.textContainer}>
+            <Text style={styles.pointsText}>
+              You have gained {gainedPoints} points!
+            </Text>
+          </View>
+        </Pressable>
+      </View>
+    </View>
+  );
 }
 
-styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        height: '100%',
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#999999',
-    },
-    animationContainer: {
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1,
-
-    },
-    lottie: {
-        width: 320,
-        height: 320,
-        backgroundColor: '#eee',
-    },
+let styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    height: "100%",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#eeeeee",
+  },
+  animationContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  lottie: {
+    width: 320,
+    height: 320,
+    backgroundColor: "#eee",
+  },
+  textContainer: {
+    alignItems: "center",
+    marginTop: "20%",
+  },
+  pointsText: {
+    fontSize: 30,
+    fontWeight: "bold",
+  },
 });
 
 export default GainedPoints;

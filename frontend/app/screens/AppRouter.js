@@ -1,6 +1,6 @@
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import React from "react";
 import { Text, View } from "react-native";
 import { useSelector } from "react-redux";
 
@@ -13,7 +13,7 @@ const Home = () => {
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Welcome, {email}!</Text>
+      <Text>Home Screen</Text>
     </View>
   );
 };
