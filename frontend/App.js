@@ -6,28 +6,32 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginView from "./app/screens/Login.js";
 import AppRouter from "./app/screens/AppRouter.js";
+import { Provider } from "react-redux";
+import store from "./app/redux/store.js";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Login"
-            component={LoginView}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Main"
-            component={AppRouter}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </GestureHandlerRootView>
+    <Provider store={store}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Login"
+              component={LoginView}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Main"
+              component={AppRouter}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </Provider>
   );
 }
 
