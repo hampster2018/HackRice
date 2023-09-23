@@ -9,26 +9,34 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { setEmail } from "../reducers/UserReducer";
 
 const LoginView = ({ navigation }) => {
-  const [email, setEmail] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+
+  const dispatch = useDispatch();
+
+  const handleLogin = () => {
+    dispatch(setEmail(emailValue));
+    navigation.navigate("Main", { screen: "Home" });
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Welcome to Greenhouse</Text>
+        <Text style={styles.title}>
+          Welcome to <Text style={{ color: "#28b2b3" }}>Greenhouse</Text>
+        </Text>
         <TextInput
           style={styles.input}
-          placeholder="blank182@gmail.com"
+          placeholder="example@gmail.com"
           keyboardType="email-address"
-          onChangeText={(text) => setEmail(text)}
-          value={email}
+          onChangeText={(text) => setEmailValue(text)}
+          value={emailValue}
         />
         <View style={styles.buttonContainer}>
-          <Button
-            title="Login"
-            onPress={() => navigation.navigate("Main", { screen: "Home" })}
-          />
+          <Button title="Login" onPress={handleLogin} />
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>

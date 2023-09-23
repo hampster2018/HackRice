@@ -1,3 +1,4 @@
+from typing import Dict, List
 from flask import Flask
 from flask_cors import CORS
 import openai
@@ -13,27 +14,116 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route("/test")
+class Event:
+    def __init__(
+        self, event_name, event_description, start_time, end_time, date
+    ) -> None:
+        self.event_name = event_name
+        self.event_description = event_description
+        self.start_time = start_time
+        self.end_time = end_time
+        self.date = date
+
+
+class EventEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Event):
+            return {
+                "event_name": obj.event_name,
+                "event_description": obj.event_description,
+                "start_time": obj.start_time,
+                "end_time": obj.end_time,
+                "date": obj.date,
+            }
+        return super().default(obj)
+
+
+events: List[Event] = [
+    Event(
+        "Pick up prescription",
+        "Pick up prescription from the pharmacy.",
+        "09:00",
+        "09:30",
+        "2021-10-10",
+    ),
+    Event("Do laundry", "Do laundry.", "09:30", "10:30", "2021-10-10"),
+    Event(
+        "Get groceries",
+        "Get groceries from the grocery store.",
+        "10:30",
+        "11:30",
+        "2021-10-10",
+    ),
+]
+
+my_points = 0
+
+
+@app.route("/")
 def test():
     return "Hello World"
 
 
 @app.route("/transcribe_schedule", methods=["POST"])
 def transcribe_schedule():
-    print(f"Received: {request}")
     file = request.files["file"]
     filename = file.filename
     file.save(filename)
     transcription = openai.Audio.transcribe("whisper-1", filename)
     output = generate_schedule(transcription)
 
-    # map the ScheduleItem objects to dictionaries with the military time interval separated
-    output = [item.__dict__ for item in output]
-    for item in output:
-        item["start_time"] = item["time"].split("-")[0]
-        item["end_time"] = item["time"].split("-")[1]
-        del item["time"]
+    # convert the output to Events
+    current_events = []
+    for event in output:
+        current_events.append(
+            Event(
+                event["name_of_event"],
+                event["description_of_event"],
+                event["military_start_time"],
+                event["military_end_time"],
+                "2021-10-10",
+            )
+        )
 
-    print(f"Outputting: {output}")
+    return json.dumps(current_events, cls=EventEncoder)
 
-    return output
+
+@app.route("/add_event", methods=["POST"])
+def add_event():
+    event_name = request.form["event_name"]
+    event_description = request.form["event_description"]
+    start_time = request.form["start_time"]
+    end_time = request.form["end_time"]
+    date = request.form["date"]
+
+    event = Event(event_name, event_description, start_time, end_time, date)
+    events.append(event)
+
+    return f"Event '{event_name}' added."
+
+
+@app.route("/get_events", methods=["GET"])
+def get_events():
+    return json.dumps(events, cls=EventEncoder)
+
+
+@app.route("/delete_event", methods=["POST"])
+def delete_event():
+    event_name = request.form["event_name"]
+    for event in events:
+        if event.event_name == event_name:
+            events.remove(event)
+            return f"Event '{event_name}' deleted."
+    return f"Event '{event_name}' not found."
+
+
+@app.route("/set_points", methods=["POST"])
+def set_points():
+    global my_points
+    my_points = request.form["points"]
+    return f"Set points to {my_points}."
+
+
+@app.route("/get_points", methods=["GET"])
+def get_points():
+    return f"{my_points}"
