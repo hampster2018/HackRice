@@ -2,9 +2,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider } from "react-redux";
+
 import store from "./app/redux/Store.js";
+import AppRouter from "./app/screens/AppRouter.js";
 import Event from "./app/screens/Event.js";
 import GainedPoints from "./app/screens/GainedPoints.js";
+import LoginView from "./app/screens/LoginView.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,9 +28,9 @@ function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-            name="Event"
-            component={Event}
-            options={{ headerShown: false }}
+              name="Event"
+              component={Event}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name="GainedPoints"
