@@ -2,14 +2,17 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Text, View } from "react-native";
+import { useSelector } from "react-redux";
 import CalendarScreen from "./AgendaScreen";
 
 // Sample Components
 
 const Home = () => {
+  const email = useSelector((state) => state.user.email);
+
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screen</Text>
+      <Text>Welcome, {email}!</Text>
     </View>
   );
 };
