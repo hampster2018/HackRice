@@ -1,14 +1,26 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import Example from './app/screens/Example.js';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
-export default function App() {
+const Drawer = createDrawerNavigator();
+
+function App() {
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+          <Drawer.Navigator>
+          <Drawer.Screen name="Example" component={Example}  />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
