@@ -1,6 +1,6 @@
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import React from "react";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Text, View } from "react-native";
 import { useSelector } from "react-redux";
 
