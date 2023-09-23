@@ -1,46 +1,59 @@
-import { Agenda } from "react-native-calendars";
-import { StyleSheet, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import moment from "moment/moment";
+import React from "react";
+import { Agenda } from "react-native-calendars";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { StyleSheet, Text, View } from "react-native";
 
 const AgendaScreen = () => {
+  const [items, setItems] = React.useState({});
+
+  React.useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        "https://highly-boss-dodo.ngrok-free.app/get_events"
+      );
+      const data = await response.json();
+      console.log(data);
+      const eventsByDate = data.reduce((acc, event) => {
+        const date = event.date;
+        if (!acc[date]) {
+          acc[date] = [];
+        }
+        acc[date].push(event);
+        return acc;
+      }, {});
+      console.log(eventsByDate);
+      setItems(eventsByDate);
+    }
+    fetchData();
+  }, []);
+
+  if (!items) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  console.log(items);
+
   return (
     <View style={{ flex: 1 }}>
       <Agenda
-        selected="2023-09-24"
-        items={{
-          "2023-09-24": [
-            {
-              name_of_event: "Do laundry",
-              description_of_event: "Wash and fold laundry",
-              military_start_time: "11:30",
-              military_end_time: "13:00",
-            },
-            {
-              name_of_event: "Pick up prescription",
-              description_of_event:
-                "Go to the pharmacy and pick up prescription",
-              military_start_time: "10:00",
-              military_end_time: "11:00",
-            },
-            {
-              name_of_event: "Grocery shopping",
-              description_of_event: "Buy groceries at the grocery store",
-              military_start_time: "14:00",
-              military_end_time: "15:00",
-            },
-          ],
-        }}
+        selected="2023-09-23"
+        items={items}
         renderItem={(item, isFirst) => {
-          const startTime = moment(item.military_start_time, "HH:mm:ss");
-          const endTime = moment(item.military_end_time, "HH:mm:ss");
+          console.log(item);
+          const startTime = moment(item.start_time, "HH:mm");
+          const endTime = moment(item.end_time, "HH:mm");
           const duration = moment.duration(endTime.diff(startTime));
           const height = duration.asMinutes() * 2; // 2 pixels per minute
           return (
             <TouchableOpacity style={[styles.item, { height }]}>
-              <Text style={styles.itemText}>{item.name_of_event}</Text>
+              <Text style={styles.itemText}>{item.event_name}</Text>
               <Text style={styles.itemDescription}>
-                {item.description_of_event}
+                {item.event_description}
               </Text>
             </TouchableOpacity>
           );
