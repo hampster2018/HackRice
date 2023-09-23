@@ -51,10 +51,10 @@ def generate_schedule(transcription: str) -> List[object]:
                                     "type": "string",
                                     "description": "The end time of the event in military time such as 21:00 or 09:30. Do not put AM or PM. Choose a realistic end time considering the start time and the description of the event. The end time must be after the start time.",
                                 },
-                                # "carbon_footprint_reduction_by_scheduling": {
-                                #     "type": "string",
-                                #     "description": "How the schedule reduces the carbon footprint.",
-                                # },
+                                "carbon_points": {
+                                    "type": "number",
+                                    "description": "This number represents the carbon footprint of the event. The lower the number, the better. The carbon footprint must be a positive integer.",
+                                },
                             },
                         },
                     },
