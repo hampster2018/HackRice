@@ -92,8 +92,9 @@ def add_event():
     event_description = request.form["event_description"]
     start_time = request.form["start_time"]
     end_time = request.form["end_time"]
+    date = request.form["date"]
 
-    event = Event(event_name, event_description, start_time, end_time)
+    event = Event(event_name, event_description, start_time, end_time, date)
     events.append(event)
 
     return f"Event '{event_name}' added."
@@ -104,10 +105,11 @@ def get_events():
     return json.dumps(events, cls=EventEncoder)
 
 
-@app.route("/delete_event", methods=["DELETE"])
-def delete_event(event_name):
-    request.form["event_name"]
+@app.route("/delete_event", methods=["POST"])
+def delete_event():
+    event_name = request.form["event_name"]
     for event in events:
         if event.event_name == event_name:
             events.remove(event)
             return f"Event '{event_name}' deleted."
+    return f"Event '{event_name}' not found."
