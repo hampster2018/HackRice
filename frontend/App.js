@@ -1,14 +1,12 @@
-import { StyleSheet } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import LoginView from "./app/screens/Login.js";
-import AppRouter from "./app/screens/AppRouter.js";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider } from "react-redux";
-import store from "./app/redux/Store.js";
 
-const Drawer = createDrawerNavigator();
+import store from "./app/redux/Store.js";
+import AppRouter from "./app/screens/AppRouter.js";
+import LoginView from "./app/screens/Login.js";
+
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -35,12 +33,3 @@ function App() {
 }
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
