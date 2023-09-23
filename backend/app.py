@@ -5,6 +5,8 @@ import openai
 from generate_optimal_function import generate_schedule
 import json
 from flask import request
+import sqlite3
+from flask import g
 
 with open("secrets.json", "r") as f:
     secrets = json.load(f)["key"]
@@ -12,6 +14,7 @@ with open("secrets.json", "r") as f:
 
 app = Flask(__name__)
 CORS(app)
+app.config["DATABASE"] = "backend_database.db"
 
 
 class Event:
@@ -38,25 +41,27 @@ class EventEncoder(json.JSONEncoder):
         return super().default(obj)
 
 
-events: List[Event] = [
-    Event(
-        "Pick up prescription",
-        "Pick up prescription from the pharmacy.",
-        "09:00",
-        "09:30",
-        "2021-10-10",
-    ),
-    Event("Do laundry", "Do laundry.", "09:30", "10:30", "2021-10-10"),
-    Event(
-        "Get groceries",
-        "Get groceries from the grocery store.",
-        "10:30",
-        "11:30",
-        "2021-10-10",
-    ),
-]
+def get_db():
+    db = getattr(g, "_database", None)
+    if db is None:
+        db = g._database = sqlite3.connect(app.config["DATABASE"])
+        with app.open_resource("schema.sql") as f:
+            db.executescript(f.read().decode("utf8"))
+        # if the database has nothing in the users, run the seed_database.sql file
+        cur = db.cursor()
+        cur.execute("SELECT * FROM users")
+        output = cur.fetchall()
+        if output == []:
+            with app.open_resource("seed_database.sql") as f:
+                db.executescript(f.read().decode("utf8"))
+    return db
 
-my_points = 0
+
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, "_database", None)
+    if db is not None:
+        db.close()
 
 
 @app.route("/")
@@ -81,7 +86,7 @@ def transcribe_schedule():
                 event["description_of_event"],
                 event["military_start_time"],
                 event["military_end_time"],
-                "2021-10-10",
+                "2023-09-23",
             )
         )
 
@@ -89,41 +94,76 @@ def transcribe_schedule():
 
 
 @app.route("/add_event", methods=["POST"])
-def add_event():
+def add_event_sql():
     event_name = request.form["event_name"]
     event_description = request.form["event_description"]
     start_time = request.form["start_time"]
     end_time = request.form["end_time"]
     date = request.form["date"]
 
-    event = Event(event_name, event_description, start_time, end_time, date)
-    events.append(event)
+    cur = get_db().cursor()
+    cur.execute(
+        "INSERT INTO events (user_id, name, description, start_time, end_time, date) VALUES (1, ?, ?, ?, ?, ?)",
+        (event_name, event_description, start_time, end_time, date),
+    )
+    get_db().commit()
+
+    cur.execute("SELECT * FROM events")
+    # print(cur.fetchall())
+
+    # verify that the event was added
+    cur.execute("SELECT * FROM events WHERE name = ?", (event_name,))
+    output = cur.fetchone()
+    if output is None:
+        return f"Event '{event_name}' not added."
 
     return f"Event '{event_name}' added."
 
 
 @app.route("/get_events", methods=["GET"])
-def get_events():
+def get_events_sql():
+    # get all events from the database associated with John Doe
+    cur = get_db().cursor()
+    cur.execute("SELECT * FROM events")
+    events = cur.fetchall()
+    # print(events)
+    # convert the events to Event objects
+    events = [
+        Event(
+            event[1],
+            event[2],
+            event[3],
+            event[4],
+            event[5],
+        )
+        for event in events
+    ]
     return json.dumps(events, cls=EventEncoder)
 
 
 @app.route("/delete_event", methods=["POST"])
-def delete_event():
+def delete_event_sql():
     event_name = request.form["event_name"]
-    for event in events:
-        if event.event_name == event_name:
-            events.remove(event)
-            return f"Event '{event_name}' deleted."
-    return f"Event '{event_name}' not found."
+
+    cur = get_db().cursor()
+    cur.execute("DELETE FROM events WHERE name = ?", (event_name,))
+    get_db().commit()
+
+    return f"Event '{event_name}' deleted."
 
 
 @app.route("/set_points", methods=["POST"])
-def set_points():
-    global my_points
+def set_points_sql():
     my_points = request.form["points"]
+    cur = get_db().cursor()
+    cur.execute("UPDATE users SET points = ? WHERE id = 1", (my_points,))
+    get_db().commit()
     return f"Set points to {my_points}."
 
 
 @app.route("/get_points", methods=["GET"])
-def get_points():
-    return f"{my_points}"
+def get_points_sql():
+    cur = get_db().cursor()
+    cur.execute("SELECT points FROM users WHERE id = 1")
+    output = cur.fetchone()[0]
+    return f"{output}"
