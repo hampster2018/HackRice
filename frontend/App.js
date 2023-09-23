@@ -15,8 +15,16 @@ function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Login" component={LoginView} />
-          <Stack.Screen name="Main" component={AppRouter} />
+          <Stack.Screen
+            name="Login"
+            component={LoginView}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Main"
+            component={AppRouter}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </GestureHandlerRootView>
