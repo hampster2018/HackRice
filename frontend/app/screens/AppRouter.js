@@ -1,7 +1,7 @@
 import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Text, View } from "react-native";
+import { Title } from "react-native-paper";
 
 // Sample Components
 
@@ -31,7 +31,6 @@ const Leaderboard = () => {
 
 // App Router using Stack Navigator
 const Drawer = createDrawerNavigator();
-const Stack = createNativeStackNavigator();
 
 const AppRouter = () => {
   return (

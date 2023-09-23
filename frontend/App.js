@@ -1,13 +1,13 @@
 import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
-import Example from "./app/screens/Example.js";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginView from "./app/screens/Login.js";
 import AppRouter from "./app/screens/AppRouter.js";
+import Events from "./app/screens/Events.js";
+import Event from "./app/screens/Event.js";
+import GainedPoints from "./app/screens/GainedPoints.js";
 
-const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -23,6 +23,16 @@ function App() {
           <Stack.Screen
             name="Main"
             component={AppRouter}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Event"
+            component={Event}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="GainedPoints"
+            component={GainedPoints}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
