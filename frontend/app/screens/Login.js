@@ -1,35 +1,41 @@
+import { AntDesign } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
-  View,
+  Keyboard,
+  SafeAreaView,
+  StyleSheet,
   Text,
   TextInput,
-  StyleSheet,
-  SafeAreaView,
-  Button,
   TouchableWithoutFeedback,
-  Keyboard,
 } from "react-native";
+import { useDispatch } from "react-redux";
+
+import { setEmail } from "../reducers/UserReducer";
 
 const LoginView = ({ navigation }) => {
-  const [email, setEmail] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+
+  const dispatch = useDispatch();
+
+  const handleLogin = () => {
+    dispatch(setEmail(emailValue));
+    navigation.navigate("Main", { screen: "Home" });
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Welcome to Greenhouse</Text>
+        <Text style={styles.title}>
+          Welcome to <Text style={{ color: "#28b2b3" }}>Greenhouse</Text>
+        </Text>
         <TextInput
           style={styles.input}
-          placeholder="blank182@gmail.com"
+          placeholder="example@gmail.com"
           keyboardType="email-address"
-          onChangeText={(text) => setEmail(text)}
-          value={email}
+          onChangeText={(text) => setEmailValue(text)}
+          value={emailValue}
         />
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Login"
-            onPress={() => navigation.navigate("Main", { screen: "Home" })}
-          />
-        </View>
+        <AntDesign name="login" size={24} color="black" onPress={handleLogin} />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -42,6 +48,12 @@ const styles = StyleSheet.create({
     justifyContent: "center", // Vertically center contents
     alignItems: "center", // Horizontally center contents
     backgroundColor: "#ffffff",
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
   },
   title: {
     fontSize: 24,

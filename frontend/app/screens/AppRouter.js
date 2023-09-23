@@ -1,22 +1,19 @@
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Text, View } from "react-native";
+import { useSelector } from "react-redux";
+
+import CalendarScreen from "./AgendaScreen";
 
 // Sample Components
 
 const Home = () => {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-};
+  const email = useSelector((state) => state.user.email);
 
-const Calendar = () => {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Calendar Screen</Text>
+      <Text>Welcome, {email}!</Text>
     </View>
   );
 };
@@ -31,14 +28,37 @@ const Leaderboard = () => {
 
 // App Router using Stack Navigator
 const Drawer = createDrawerNavigator();
-const Stack = createNativeStackNavigator();
 
 const AppRouter = () => {
   return (
     <Drawer.Navigator initialRouteName="Home">
-      <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Calendar" component={Calendar} />
-      <Drawer.Screen name="Leaderboard" component={Leaderboard} />
+      <Drawer.Screen
+        name="Home"
+        component={Home}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <AntDesign name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Calendar"
+        component={CalendarScreen}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <AntDesign name="calendar" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Leaderboard"
+        component={Leaderboard}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <MaterialIcons name="leaderboard" size={24} color="black" />
+          ),
+        }}
+      />
     </Drawer.Navigator>
   );
 };
