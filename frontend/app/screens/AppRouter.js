@@ -6,18 +6,8 @@ import { useSelector } from "react-redux";
 
 import CalendarScreen from "./AgendaScreen";
 import LeaderboardScreen from "./leaderboard/LeaderBoardScreen";
-
+import Home from "./Home";
 // Sample Components
-
-const Home = () => {
-  const email = useSelector((state) => state.user.email);
-
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Welcome, {email}!</Text>
-    </View>
-  );
-};
 
 // const Leaderboard = () => {
 //   return (

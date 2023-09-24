@@ -855,14 +855,14 @@ const styles = StyleSheet.create({
     paddingLeft: '5%'
   },
 
-  grapTxt: {
-    fontWeight: 'bold',
-    fontSize: '75%',
-    marginTop: '5%',
-    // borderWidth: 1,
-    textAlign: 'center'
-    // paddingLeft: '5%'
-  },
+  // grapTxt: {
+  //   fontWeight: 'bold',
+  //   fontSize: '75%',
+  //   marginTop: '5%',
+  //   // borderWidth: 1,
+  //   textAlign: 'center'
+  //   // paddingLeft: '5%'
+  // },
 
   infoCon:{
     // borderWidth: 2,
