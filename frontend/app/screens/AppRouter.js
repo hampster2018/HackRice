@@ -7,6 +7,7 @@ import Event from "./Event";
 import GainedPoints from "./GainedPoints";
 import Home from "./Home";
 import LeaderboardScreen from "./leaderboard/LeaderBoardScreen";
+import SmartHome from "./SmartHome";
 const Drawer = createDrawerNavigator();
 
 const AppRouter = ({ route }) => {
@@ -35,6 +36,15 @@ const AppRouter = ({ route }) => {
       <Drawer.Screen
         name="Leaderboard"
         component={LeaderboardScreen}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <AntDesign name="barschart" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Smart Home"
+        component={SmartHome}
         options={{
           drawerIcon: ({ color, size }) => (
             <AntDesign name="barschart" size={size} color={color} />
