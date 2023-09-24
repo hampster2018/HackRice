@@ -1,28 +1,15 @@
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/core";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import React from "react";
-import { Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { useSelector } from "react-redux";
 
 import CalendarScreen from "./AgendaScreen";
-import LeaderboardScreen from "./leaderboard/LeaderBoardScreen";
+import Event from "./Event";
+import GainedPoints from "./GainedPoints";
 import Home from "./Home";
-// Sample Components
-
-// const Leaderboard = () => {
-//   return (
-//     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-//       <Text>Leaderboard Screen</Text>
-//     </View>
-//   );
-// };
-
-// App Router using Stack Navigator
+import LeaderboardScreen from "./leaderboard/LeaderBoardScreen";
 const Drawer = createDrawerNavigator();
 
-const AppRouter = () => {
+const AppRouter = ({ route }) => {
   return (
     <Drawer.Navigator initialRouteName="Home">
       <Drawer.Screen
@@ -37,6 +24,7 @@ const AppRouter = () => {
       <Drawer.Screen
         name="Calendar"
         component={CalendarScreen}
+        initialParams={{ data: route.params }}
         options={{
           drawerIcon: ({ color, size }) => (
             <AntDesign name="calendar" size={size} color={color} />
@@ -50,6 +38,20 @@ const AppRouter = () => {
           drawerIcon: ({ color, size }) => (
             <AntDesign name="barschart" size={size} color={color} />
           ),
+        }}
+      />
+      <Drawer.Screen
+        name="Event"
+        component={Event}
+        options={{
+          drawerItemStyle: { height: 0 },
+        }}
+      />
+      <Drawer.Screen
+        name="GainedPoints"
+        component={GainedPoints}
+        options={{
+          drawerItemStyle: { height: 0 },
         }}
       />
     </Drawer.Navigator>

@@ -1,5 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider } from "react-redux";
 
@@ -13,6 +14,7 @@ import RecordScreen from "./app/screens/audio-input/RecordScreen.js";
 const Stack = createNativeStackNavigator();
 
 function App() {
+
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={{ flex: 1 }}>

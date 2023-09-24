@@ -1,41 +1,72 @@
+import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 import { Pressable, Text, StyleSheet, View } from "react-native";
 
-const Event = ({ route, navigation }) => {
-  //const navigation = useNavigation();
-  console.log("Here" + route.params);
+import complete_event from "../api/complete_event";
 
-  const { event, points, hour, minute, date, eventDescription } = route.params;
-  let numHours = new Date().getHours() - hour;
+const Event = ({ route, navigation }) => {
+  const {
+    event,
+    points,
+    start_time,
+    end_time,
+    date,
+    eventDescription,
+    completed,
+  } = route.params;
+  const hour = parseInt(start_time.split(":")[0], 10);
+  const minute = parseInt(start_time.split(":")[1], 10);
+  let numHours = hour - new Date().getHours();
   let numMinutes = minute - new Date().getMinutes();
   if (numMinutes < 0) {
     numHours += 1;
     numMinutes += 60;
   }
   let timeString = "";
-  if (numHours !== 0) {
+  if (numHours > 0) {
     timeString += numHours + "h ";
   }
-  if (numMinutes !== 0) {
+  if (numMinutes > 0) {
     timeString += numMinutes + "m";
   }
   if (timeString === "") {
-    timeString = "0m";
+    timeString = "In Progress";
   }
+  const re = /(\b[a-z](?!\s))/g;
+  const eventNew = event.replace(re, (x) => x.toUpperCase());
 
   return (
     <View style={styles.page}>
+      <View style={styles.backArrow}>
+        <AntDesign
+          name="leftsquareo"
+          size={30}
+          color="black"
+          onPress={() => navigation.navigate("Calendar")}
+        />
+      </View>
       <View style={styles.container}>
         <View style={styles.infoContainer}>
-          <Text style={styles.eventTitle}>{event}</Text>
+          <Text style={styles.eventTitle}>{eventNew}</Text>
           <Text style={styles.eventTimeTillTitle}>Time until event:</Text>
           <Text style={styles.eventTimeTill}>{timeString}</Text>
           <Text style={styles.eventDate}>Date: {date}</Text>
+          <Text style={styles.eventTime}>
+            Time: {start_time} - {end_time}
+          </Text>
           <Text style={styles.eventDescriptionTitle}>Event Description:</Text>
           <Text style={styles.eventDescription}>{eventDescription}</Text>
         </View>
         <View style={styles.finishTaskButton}>
-          <Pressable onPress={() => navigation.navigate("GainedPoints")}>
+          <Pressable
+            onPress={() => {
+              const newPoints = complete_event(event, 1, 1, points);
+              navigation.navigate("GainedPoints", {
+                points: newPoints,
+                event,
+              });
+            }}
+          >
             <Text>Finished Task</Text>
           </Pressable>
         </View>
@@ -49,17 +80,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
+  backArrow: {
+    marginTop: "10%",
+    marginLeft: "5%",
+  },
   container: {
     flex: 1,
     width: "80%",
-    height: "80%",
+    height: "70%",
     marginLeft: "10%",
     marginTop: "10%",
     marginBottom: "10%",
-    backgroundColor: "#038020",
   },
   infoContainer: {
-    height: "90%%",
+    height: "90%",
   },
   eventTitle: {
     fontSize: 50,
@@ -78,6 +112,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "medium",
     marginTop: 30,
+  },
+  eventTime: {
+    fontSize: 15,
+    fontWeight: "medium",
   },
   eventDescriptionTitle: {
     marginTop: "10%",

@@ -13,12 +13,15 @@ const userSlice = createSlice({
     setEmail: (state, action) => {
       state.email = action.payload;
     },
-    addEvents: (state, action) => {
-      state.events.push(action.payload);
+    setEvents: (state, action) => {
+      state.events = action.payload;
+    },
+    updateEvent: (state, action, date, index) => {
+      state.events[date][index] = action.payload;
     },
   },
 });
 
-export const { setEmail, addEvents } = userSlice.actions;
+export const { setEmail, setEvents, updateEvent } = userSlice.actions;
 
 export default userSlice.reducer;
