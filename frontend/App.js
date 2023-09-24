@@ -34,16 +34,6 @@ function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="Event"
-              component={Event}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="GainedPoints"
-              component={GainedPoints}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
               name="AudioRecording"
               component={RecordScreen}
               options={{ headerShown: false }}
