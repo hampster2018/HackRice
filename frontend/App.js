@@ -6,8 +6,6 @@ import { Provider } from "react-redux";
 
 import store from "./app/redux/Store.js";
 import AppRouter from "./app/screens/AppRouter.js";
-import Event from "./app/screens/Event.js";
-import GainedPoints from "./app/screens/GainedPoints.js";
 import LoginView from "./app/screens/Login.js";
 
 const Stack = createNativeStackNavigator();
@@ -27,16 +25,6 @@ function App() {
             <Stack.Screen
               name="Main"
               component={AppRouter}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Event"
-              component={Event}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="GainedPoints"
-              component={GainedPoints}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

@@ -1,3 +1,4 @@
+import { Feather } from "@expo/vector-icons";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import moment from "moment/moment";
 import React, { useState, useEffect, useCallback } from "react";
@@ -7,10 +8,16 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 import get_events from "../api/get_events.js";
 
-const AgendaScreen = ({ route }) => {
+const AgendaScreen = (data, { route }) => {
   const navigator = useNavigation();
   const [events, setEvents] = useState(null);
-  console.log(events);
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().getFullYear() +
+      "-" +
+      new Date().getDate() +
+      "-" +
+      new Date().getMonth(),
+  );
 
   useEffect(() => {
     get_events(setEvents);
@@ -18,9 +25,18 @@ const AgendaScreen = ({ route }) => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log(route.params);
-      if (route.params !== undefined) {
-        console.log("hi");
+      if (data?.route?.params?.event !== undefined) {
+        const param = data?.route?.params;
+        const newEvents =
+          events[
+            selectedDate[2] + "-" + selectedDate[1] + "-" + selectedDate[0]
+          ];
+        for (let i = 0; i < newEvents.length; i++) {
+          if (newEvents[i].event_name === param.event) {
+            newEvents[i].completed = 1;
+          }
+        }
+        events[selectedDate] = newEvents;
       }
     }, []),
   );
@@ -36,13 +52,17 @@ const AgendaScreen = ({ route }) => {
   return (
     <View style={{ flex: 1 }}>
       <Agenda
-        selected="2023-09-23"
+        selected="2023-09-24"
         items={events}
-        renderItem={(item, index) => {
+        renderItem={(item) => {
           const startTime = moment(item.start_time, "HH:mm");
           const endTime = moment(item.end_time, "HH:mm");
           const duration = moment.duration(endTime.diff(startTime));
           const height = duration.asMinutes() * 2; // 2 pixels per minute
+          let icon = "square";
+          if (item.completed === 1) {
+            icon = "check-square";
+          }
           return (
             <TouchableOpacity
               style={[styles.item, { height }]}
@@ -58,10 +78,12 @@ const AgendaScreen = ({ route }) => {
                 })
               }
             >
-              <Text style={styles.itemText}>{item.event_name}</Text>
-              <Text style={styles.itemDescription}>
-                {item.event_description}
-              </Text>
+              <View style={styles.textContainer}>
+                <Text style={styles.itemText}>{item.event_name}</Text>
+              </View>
+              <View style={styles.iconContainer}>
+                <Feather name={icon} size={30} color="black" />
+              </View>
             </TouchableOpacity>
           );
         }}
@@ -73,6 +95,14 @@ const AgendaScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: "center",
+    width: "100%",
+  },
+  iconContainer: {
+    height: "100%",
     justifyContent: "center",
   },
   item: {
@@ -82,6 +112,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginRight: 10,
     marginTop: 17,
+    flexDirection: "row",
   },
   itemText: {
     color: "#888",

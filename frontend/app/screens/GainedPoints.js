@@ -16,9 +16,9 @@ function GainedPoints({ route, navigation }) {
       <View style={styles.animationContainer}>
         <Pressable
           onPress={() =>
-            navigation.navigate("Calendar", {
+            navigation.push("Main", {
+              screen: "Calendar",
               event: route.params.event,
-              completed: true,
             })
           }
         >
