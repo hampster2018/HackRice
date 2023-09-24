@@ -1,9 +1,11 @@
 import LottieView from "lottie-react-native";
 import React, { useEffect, useRef } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 function GainedPoints({ route, navigation }) {
   const animation = useRef(null);
+
+  const gainedPoints = route.params.points;
 
   useEffect(() => {
     //animation.current?.play();
@@ -11,39 +13,57 @@ function GainedPoints({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => navigation.navigate("Events")}>
-        <View style={styles.animationContainer}>
+      <View style={styles.animationContainer}>
+        <Pressable
+          onPress={() =>
+            navigation.push("Main", {
+              screen: "Calendar",
+              event: route.params.event,
+            })
+          }
+        >
           <LottieView
             autoPlay
             ref={animation}
             style={styles.lottie}
             source={require("../../assets/GainedPointsAnimation.json")}
           />
-        </View>
-      </Pressable>
+          <View style={styles.textContainer}>
+            <Text style={styles.pointsText}>
+              You have gained {gainedPoints} points!
+            </Text>
+          </View>
+        </Pressable>
+      </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
   container: {
     flex: 1,
     height: "100%",
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#999999",
+    backgroundColor: "#eeeeee",
   },
   animationContainer: {
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    flex: 1,
   },
   lottie: {
     width: 320,
     height: 320,
     backgroundColor: "#eee",
+  },
+  textContainer: {
+    alignItems: "center",
+    marginTop: "20%",
+  },
+  pointsText: {
+    fontSize: 30,
+    fontWeight: "bold",
   },
 });
 
