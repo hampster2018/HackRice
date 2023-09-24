@@ -31,6 +31,7 @@ const AppRouter = ({ route }) => {
           ),
         }}
       />
+      
       <Drawer.Screen
         name="Leaderboard"
         component={LeaderboardScreen}
