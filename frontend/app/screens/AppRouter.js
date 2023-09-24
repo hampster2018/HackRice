@@ -1,16 +1,15 @@
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome5 } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import React from "react";
 
 import CalendarScreen from "./AgendaScreen";
 import DonatePoints from "./DonatePoints";
 import DonateScreen from "./DonateScreen";
-import Event from "./Event";
 import GainedPoints from "./GainedPoints";
 import Home from "./Home";
 import LeaderboardScreen from "./leaderboard/LeaderBoardScreen";
 import SmartHome from "./SmartHome";
+import Event from "./events/Event";
 
 const Drawer = createDrawerNavigator();
 

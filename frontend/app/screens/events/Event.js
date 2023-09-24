@@ -1,11 +1,11 @@
 import { AntDesign } from "@expo/vector-icons";
 import React from "react";
-import { Pressable, Text, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
-import complete_event from "../api/complete_event";
-import { useSelector, useDispatch } from "react-redux";
-import { setEvents } from "../reducers/UserReducer";
-import get_events from "../api/get_events";
+import complete_event from "../../api/complete_event";
+import get_events from "../../api/get_events";
+import { setEvents } from "../../reducers/UserReducer";
 
 const Event = ({ route, navigation }) => {
   const {

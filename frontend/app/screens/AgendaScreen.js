@@ -10,12 +10,13 @@ import { useSelector } from "react-redux";
 const AgendaScreen = (data, { route }) => {
   const navigator = useNavigation();
   const events = useSelector((state) => state.user.events);
+  console.log(events);
   const [selectedDate, setSelectedDate] = useState(
     new Date().getFullYear() +
       "-" +
       new Date().getDate() +
       "-" +
-      new Date().getMonth(),
+      new Date().getMonth()
   );
 
   useFocusEffect(() => {}, []);
