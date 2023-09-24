@@ -1,11 +1,14 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { Audio, RECORDING_OPTIONS_PRESET_HIGH_QUALITY } from "expo-av";
+import { useNavigation } from "@react-navigation/core";
+import { Audio } from "expo-av";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-paper";
-import { API_PREFIX } from "../../utils/api.utils";
+import { useDispatch } from "react-redux";
 
-const recording = new Audio.Recording();
+import ScheduleLoading from "./ScheduleLoading";
+import { setEmail, setEvents, addEvent } from "../../reducers/UserReducer";
+import { API_PREFIX } from "../../utils/api.utils";
 
 const formatTime = (time) => {
   const minutes = Math.floor(time / 60);
@@ -15,9 +18,23 @@ const formatTime = (time) => {
     .padStart(2, "0")}`;
 };
 
+const recordingOptions = {
+  android: {
+    extension: ".m4a",
+  },
+  ios: {
+    extension: ".wav",
+  },
+};
+
 const RecordScreen = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [recording, setRecording] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const navigator = useNavigation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     let interval;
@@ -32,17 +49,14 @@ const RecordScreen = () => {
   const handleRecordPress = async () => {
     if (!isRecording) {
       try {
-        console.log("Requesting permissions..");
         await Audio.requestPermissionsAsync();
         await Audio.setAudioModeAsync({
           allowsRecordingIOS: true,
           playsInSilentModeIOS: true,
         });
-        console.log("Starting recording..");
-        await recording.prepareToRecordAsync(
-          RECORDING_OPTIONS_PRESET_HIGH_QUALITY
-        );
-        await recording.startAsync();
+        const { recording } =
+          await Audio.Recording.createAsync(recordingOptions);
+        setRecording(recording);
         console.log("Recording started");
         setIsRecording(true);
       } catch (error) {
@@ -50,24 +64,47 @@ const RecordScreen = () => {
       }
     } else {
       try {
-        await recording.stopAndUnloadAsync();
         setIsRecording(false);
-
-        const { sound: newSound } = await recording.createNewLoadedSoundAsync();
+        await recording.stopAndUnloadAsync();
+        const uri = await recording.getURI();
 
         const formData = new FormData();
         formData.append("file", {
-          uri: newSound.uri,
+          uri,
           type: "audio/wav",
           name: "recording.wav",
         });
-        console.log("sending recording");
+        setLoading(true);
         const response = await fetch(`${API_PREFIX}/transcribe_schedule`, {
           method: "POST",
           body: formData,
         });
+        setLoading(false);
+        const data = await response.json();
 
-        console.log("Transcription response:", response);
+        data.forEach(async (event) => {
+          console.log("posting", event.event_name);
+          const formData = new FormData();
+          formData.append("event_name", event.event_name);
+          formData.append("event_description", event.event_description);
+          formData.append("start_time ", event.start_time);
+          formData.append("end_time", event.end_time);
+          formData.append("date", event.date);
+          formData.append("carbon_points", event.carbon_points);
+          formData.append("user_id", event.user_id);
+          fetch(`${API_PREFIX}/add_event`, {
+            method: "POST",
+            body: formData,
+          });
+        });
+        const newData = {
+          events: data,
+          date: "2023-09-24",
+        };
+
+        dispatch(addEvent(newData));
+
+        //navigator.navigate("Calendar");
       } catch (error) {
         console.log("Error stopping recording:", error);
       }
@@ -75,16 +112,25 @@ const RecordScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.timer}>{formatTime(elapsedTime)}</Text>
-      <TouchableOpacity style={styles.recordButton} onPress={handleRecordPress}>
-        <FontAwesome
-          name={isRecording ? "stop" : "microphone"}
-          size={64}
-          color="white"
-        />
-      </TouchableOpacity>
-    </View>
+    <>
+      {loading ? (
+        <ScheduleLoading />
+      ) : (
+        <View style={styles.container}>
+          <Text style={styles.timer}>{formatTime(elapsedTime)}</Text>
+          <TouchableOpacity
+            style={styles.recordButton}
+            onPress={handleRecordPress}
+          >
+            <FontAwesome
+              name={isRecording ? "stop" : "microphone"}
+              size={64}
+              color="white"
+            />
+          </TouchableOpacity>
+        </View>
+      )}
+    </>
   );
 };
 
@@ -108,6 +154,10 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     borderRadius: 20,
     padding: 10,
+  },
+  timer: {
+    fontSize: 80,
+    marginBottom: 300,
   },
 });
 

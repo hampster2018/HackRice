@@ -2,7 +2,7 @@ import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 import { Pressable, Text, StyleSheet, View } from "react-native";
 
-import complete_event from "../api/complete_event";
+import complete_event from "../../api/complete_event";
 
 const Event = ({ route, navigation }) => {
   const {

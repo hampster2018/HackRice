@@ -3,7 +3,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import React from "react";
 
 import CalendarScreen from "./AgendaScreen";
-import Event from "./Event";
+import Event from "./events/Event";
 import GainedPoints from "./GainedPoints";
 import Home from "./Home";
 import LeaderboardScreen from "./leaderboard/LeaderBoardScreen";
