@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 
 import LeaderboardEntry from "./LeaderboardEntry";
 import Podium from "./Podium";
+import { API_PREFIX } from "../../utils/api.utils";
 
 export default function Leaderboard({ groupId }) {
   const [entries, setEntries] = useState([]);
@@ -11,7 +12,7 @@ export default function Leaderboard({ groupId }) {
     const fetchLeaderboard = async () => {
       try {
         const response = await fetch(
-          `https://highly-boss-dodo.ngrok-free.app/get_group_leaderboard/${groupId}/1`
+          `${API_PREFIX}/get_group_leaderboard/${groupId}/1`
         );
         const data = await response.json();
         setEntries(data);

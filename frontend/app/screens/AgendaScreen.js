@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import moment from "moment/moment";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Agenda } from "react-native-calendars";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -16,7 +16,7 @@ const AgendaScreen = (data, { route }) => {
       "-" +
       new Date().getDate() +
       "-" +
-      new Date().getMonth(),
+      new Date().getMonth()
   );
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const AgendaScreen = (data, { route }) => {
         }
         events[selectedDate] = newEvents;
       }
-    }, []),
+    }, [])
   );
 
   if (events == null) {
