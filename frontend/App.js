@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider } from "react-redux";
+import { LogBox } from "react-native";
 
 import store from "./app/redux/Store.js";
 import AppRouter from "./app/screens/AppRouter.js";
@@ -14,6 +15,8 @@ import RecordScreen from "./app/screens/audio-input/RecordScreen.js";
 const Stack = createNativeStackNavigator();
 
 function App() {
+
+  LogBox.ignoreAllLogs(true);
 
   return (
     <Provider store={store}>
