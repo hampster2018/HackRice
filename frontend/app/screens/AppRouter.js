@@ -1,40 +1,17 @@
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import React from "react";
-import { Pressable, Text, View } from "react-native";
-import { useSelector } from "react-redux";
 
 import CalendarScreen from "./AgendaScreen";
 import Event from "./Event";
 import GainedPoints from "./GainedPoints";
-import { Calendar } from "react-native-calendars";
-
-// Sample Components
-
-const Home = () => {
-  const email = useSelector((state) => state.user.email);
-
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-};
-
-const Leaderboard = () => {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Leaderboard Screen</Text>
-    </View>
-  );
-};
+import Home from "./Home";
+import LeaderboardScreen from "./leaderboard/LeaderBoardScreen";
 
 // App Router using Stack Navigator
 const Drawer = createDrawerNavigator();
 
-const AppRouter = ({route}) => {
-  console.log("AppRouter");
-  console.log(route);
+const AppRouter = ({ route }) => {
   return (
     <Drawer.Navigator initialRouteName="Home">
       <Drawer.Screen
@@ -58,10 +35,10 @@ const AppRouter = ({route}) => {
       />
       <Drawer.Screen
         name="Leaderboard"
-        component={Leaderboard}
+        component={LeaderboardScreen}
         options={{
           drawerIcon: ({ color, size }) => (
-            <MaterialIcons name="leaderboard" size={24} color="black" />
+            <AntDesign name="barschart" size={size} color={color} />
           ),
         }}
       />

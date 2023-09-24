@@ -51,10 +51,10 @@ def generate_schedule(transcription: str) -> List[object]:
                                     "type": "string",
                                     "description": "The end time of the event in military time such as 21:00 or 09:30. Do not put AM or PM. Choose a realistic end time considering the start time and the description of the event. The end time must be after the start time.",
                                 },
-                                # "carbon_footprint_reduction_by_scheduling": {
-                                #     "type": "string",
-                                #     "description": "How the schedule reduces the carbon footprint.",
-                                # },
+                                "carbon_points": {
+                                    "type": "number",
+                                    "description": """Generate a positive integer representing the carbon footprint of the activity.""",
+                                },
                             },
                         },
                     },
@@ -71,8 +71,6 @@ def generate_schedule(transcription: str) -> List[object]:
         model=model, messages=messages, functions=functions, function_call=function_call
     )
 
-    # print(completion)
-
     event_list = json.loads(completion.choices[0].message.function_call.arguments)[
         "events"
     ]
@@ -88,8 +86,6 @@ def generate_schedule(transcription: str) -> List[object]:
     completion = openai.ChatCompletion.create(
         model=model, messages=messages, functions=functions, function_call=function_call
     )
-
-    # print(completion)
 
     event_list = json.loads(completion.choices[0].message.function_call.arguments)[
         "events"
