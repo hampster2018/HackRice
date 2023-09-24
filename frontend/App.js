@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import { LogBox } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider } from "react-redux";
 
@@ -15,6 +16,8 @@ import Events from "./app/screens/events/Events.js";
 const Stack = createNativeStackNavigator();
 
 function App() {
+  LogBox.ignoreAllLogs(true);
+
   return (
     <Provider store={store}>
       <GestureHandlerRootView style={{ flex: 1 }}>

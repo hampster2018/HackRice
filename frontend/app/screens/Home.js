@@ -1,5 +1,5 @@
 import MaskedView from "@react-native-masked-view/masked-view";
-import { useNavigation } from "@react-navigation/core";
+import { useFocusEffect, useNavigation } from "@react-navigation/core";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
@@ -14,10 +14,16 @@ import {
   View,
 } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
+import { useDispatch, useSelector } from "react-redux";
+
+import get_events from "../api/get_events";
+import { setEvents } from "../reducers/UserReducer";
 
 export default function App() {
   const [height, setHeight] = useState("");
   const [width, setWidth] = useState("");
+  const dispatch = useDispatch();
+  const user_id = useSelector((state) => state.user.id);
 
   useEffect(() => {
     setHeight(Dimensions.get("window").height);
@@ -26,6 +32,11 @@ export default function App() {
 
   const [shouldShow, setShouldShow] = useState(false);
   const navigation = useNavigation();
+
+  useFocusEffect(async () => {
+    const newerData = await get_events(user_id);
+    dispatch(setEvents(newerData));
+  }, []);
 
   const barData = [
     {

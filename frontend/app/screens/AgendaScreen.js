@@ -5,12 +5,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Agenda } from "react-native-calendars";
 import { TouchableOpacity } from "react-native-gesture-handler";
-
-import get_events from "../api/get_events.js";
+import { useSelector } from "react-redux";
 
 const AgendaScreen = (data, { route }) => {
   const navigator = useNavigation();
-  const [events, setEvents] = useState(null);
+  const events = useSelector((state) => state.user.events);
+  console.log(events);
   const [selectedDate, setSelectedDate] = useState(
     new Date().getFullYear() +
       "-" +
@@ -19,27 +19,7 @@ const AgendaScreen = (data, { route }) => {
       new Date().getMonth()
   );
 
-  useEffect(() => {
-    get_events(setEvents);
-  }, []);
-
-  useFocusEffect(
-    useCallback(() => {
-      if (data?.route?.params?.event !== undefined) {
-        const param = data?.route?.params;
-        const newEvents =
-          events[
-            selectedDate[2] + "-" + selectedDate[1] + "-" + selectedDate[0]
-          ];
-        for (let i = 0; i < newEvents.length; i++) {
-          if (newEvents[i].event_name === param.event) {
-            newEvents[i].completed = 1;
-          }
-        }
-        events[selectedDate] = newEvents;
-      }
-    }, [])
-  );
+  useFocusEffect(() => {}, []);
 
   if (events == null) {
     return (

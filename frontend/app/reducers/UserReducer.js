@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   email: null,
+  id: null,
   points: 1470,
   events: [],
 };
@@ -13,12 +14,11 @@ const userSlice = createSlice({
     setEmail: (state, action) => {
       state.email = action.payload;
     },
-    setEvents: (state, action) => {
-      console.log(action.payload);
-      state.events = action.payload;
+    setId: (state, action) => {
+      state.id = action.payload;
     },
-    updateEvent: (state, action, date, index) => {
-      state.events[date][index] = action.payload;
+    setEvents: (state, action) => {
+      state.events = action.payload;
     },
     addEvent: (state, action) => {
       console.log(state.events);
@@ -27,6 +27,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { setEmail, setEvents, updateEvent, addEvent } = userSlice.actions;
+export const { setEmail, setEvents, updateEvent, addEvent, setId } =
+  userSlice.actions;
 
 export default userSlice.reducer;

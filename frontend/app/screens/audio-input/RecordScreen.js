@@ -4,10 +4,11 @@ import { Audio } from "expo-av";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-paper";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import ScheduleLoading from "./ScheduleLoading";
-import { setEmail, setEvents, addEvent } from "../../reducers/UserReducer";
+import get_events from "../../api/get_events";
+import { addEvent, setEvents } from "../../reducers/UserReducer";
 import { API_PREFIX } from "../../utils/api.utils";
 
 const formatTime = (time) => {
@@ -36,12 +37,22 @@ const RecordScreen = () => {
   const navigator = useNavigation();
   const dispatch = useDispatch();
 
+  const user_id = useSelector((state) => state.user.id);
+
+  const performTimeConsumingTask = async () => {
+    return new Promise((resolve) =>
+      setTimeout(() => {
+        resolve("result");
+      }, 3000)
+    );
+  };
+
   useEffect(() => {
     let interval;
     if (isRecording) {
       interval = setInterval(() => {
         setElapsedTime((elapsedTime) => elapsedTime + 1);
-      }, 1000);
+      }, 500);
     }
     return () => clearInterval(interval);
   }, [isRecording]);
@@ -83,26 +94,35 @@ const RecordScreen = () => {
         const data = await response.json();
 
         data.forEach(async (event) => {
-          console.log("posting", event.event_name);
-          const formData = new FormData();
-          formData.append("event_name", event.event_name);
-          formData.append("event_description", event.event_description);
-          formData.append("start_time ", event.start_time);
-          formData.append("end_time", event.end_time);
-          formData.append("date", event.date);
-          formData.append("carbon_points", event.carbon_points);
-          formData.append("user_id", event.user_id);
-          fetch(`${API_PREFIX}/add_event`, {
-            method: "POST",
-            body: formData,
-          });
-        });
-        const newData = {
-          events: data,
-          date: "2023-09-24",
-        };
+          console.log("posting", event);
+          console.log("user_id", user_id);
+          const formdata = new FormData();
+          formdata.append("carbon_points", event.carbon_points);
+          formdata.append("date", event.date);
+          formdata.append("end_time", event.end_time);
+          formdata.append("event_description", event.event_description);
+          formdata.append("event_name", event.event_name);
+          formdata.append("start_time", event.start_time);
+          formdata.append("user_id", user_id);
 
-        dispatch(addEvent(newData));
+          const requestOptions = {
+            method: "POST",
+            body: formdata,
+            redirect: "follow",
+          };
+
+          await fetch(
+            "https://highly-boss-dodo.ngrok-free.app/add_event",
+            requestOptions
+          );
+        });
+        console.log("Post Data");
+        console.log(data);
+
+        const newerData = await get_events(user_id);
+        console.log("Get Data");
+        console.log(newerData);
+        dispatch(setEvents(newerData));
 
         //navigator.navigate("Calendar");
       } catch (error) {

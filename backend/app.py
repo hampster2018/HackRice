@@ -8,6 +8,7 @@ from flask import request
 import sqlite3
 from flask import g
 import time
+from werkzeug.utils import secure_filename
 
 with open("secrets.json", "r") as f:
     secrets = json.load(f)["key"]
@@ -85,10 +86,12 @@ def test():
 @app.route("/transcribe_schedule", methods=["POST"])
 def transcribe_schedule():
     file = request.files["file"]
-    filename = file.filename
+    filename = secure_filename(file.filename)
     file.save(filename)
-    transcription = openai.Audio.transcribe("whisper-1", filename)
-    output = generate_schedule(transcription)
+    transcription = ""
+    with open(filename, "rb") as audio_file:
+        transcription = openai.Audio.transcribe("whisper-1", audio_file)
+    output = generate_schedule(transcription["text"])
 
     # convert the output to Events
     current_events = []
@@ -97,10 +100,10 @@ def transcribe_schedule():
             Event(
                 event["name_of_event"],
                 event["description_of_event"],
-                event["military_start_time"],
-                event["military_end_time"],
+                event["military_start_time_colon_separated"],
+                event["military_end_time_colon_separated"],
                 time.strftime("%Y-%m-%d"),
-                event["carbon_points"],
+                int(event["carbon_points"]) * 10,
                 False,
             )
         )
@@ -376,13 +379,20 @@ def complete_event():
     )
 
     # also give user points
-    cur.execute("SELECT points FROM users WHERE id = ?", (user_id,))
-    points = cur.fetchone()[0]
+    cur.execute("SELECT points, available_points FROM users WHERE id = ?", (user_id,))
+    output = cur.fetchone()
+    points = output[0]
+    available_points = output[1]
     if completed == "1":
         points += int(carbon_points)
+        available_points += int(carbon_points)
     else:
         points -= int(carbon_points)
-    cur.execute("UPDATE users SET points = ? WHERE id = ?", (points, user_id))
+        available_points -= int(carbon_points)
+    cur.execute(
+        "UPDATE users SET points = ?, available_points = ? WHERE id = ?",
+        (points, available_points, user_id),
+    )
     get_db().commit()
 
     return f"Event '{event_name}' set to {completed}."
@@ -390,9 +400,40 @@ def complete_event():
 
 @app.route("/get_userid/<email>", methods=["GET"])
 def get_userid(email):
-    # edit the email to escape the @ symbol
     cur = get_db().cursor()
-    replaced_email = email
-    cur.execute("SELECT id FROM users WHERE email = ?", [replaced_email])
+    cur.execute("SELECT id FROM users WHERE email = ?", [email])
     output = cur.fetchone()[0]
     return f"{output}"
+
+
+@app.route("/get_name/<user_id>", methods=["GET"])
+def get_name(user_id):
+    cur = get_db().cursor()
+    cur.execute("SELECT name FROM users WHERE id = ?", [user_id])
+    output = cur.fetchone()[0]
+    return f"{output}"
+
+
+@app.route("/get_available_points/<user_id>", methods=["GET"])
+def get_available_points(user_id):
+    cur = get_db().cursor()
+    cur.execute("SELECT available_points FROM users WHERE id = ?", [user_id])
+    output = cur.fetchone()[0]
+    return f"{output}"
+
+
+@app.route("/spend_available_points", methods=["POST"])
+def spend_available_points():
+    points = request.form["points"]
+    user_id = request.form["user_id"]
+    cur = get_db().cursor()
+    cur.execute("SELECT available_points FROM users WHERE id = ?", [user_id])
+    output = cur.fetchone()[0]
+    available_points = output
+    available_points -= int(points)
+    cur.execute(
+        "UPDATE users SET available_points = ? WHERE id = ?",
+        (available_points, user_id),
+    )
+    get_db().commit()
+    return f"{points} points spent."

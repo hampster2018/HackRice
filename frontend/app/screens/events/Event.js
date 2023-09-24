@@ -1,8 +1,11 @@
 import { AntDesign } from "@expo/vector-icons";
 import React from "react";
-import { Pressable, Text, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
 import complete_event from "../../api/complete_event";
+import get_events from "../../api/get_events";
+import { setEvents } from "../../reducers/UserReducer";
 
 const Event = ({ route, navigation }) => {
   const {
@@ -14,6 +17,8 @@ const Event = ({ route, navigation }) => {
     eventDescription,
     completed,
   } = route.params;
+  const dispatch = useDispatch();
+  const id = useSelector((state) => state.user.id);
   const hour = parseInt(start_time.split(":")[0], 10);
   const minute = parseInt(start_time.split(":")[1], 10);
   let numHours = hour - new Date().getHours();
@@ -59,8 +64,10 @@ const Event = ({ route, navigation }) => {
         </View>
         <View style={styles.finishTaskButton}>
           <Pressable
-            onPress={() => {
-              const newPoints = complete_event(event, 1, 1, points);
+            onPress={async () => {
+              const newPoints = await complete_event(event, 1, 1, points);
+              const events = await get_events(id);
+              dispatch(setEvents(events));
               navigation.navigate("GainedPoints", {
                 points: newPoints,
                 event,

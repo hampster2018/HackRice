@@ -1,63 +1,63 @@
 INSERT INTO users
 	(name, points, email)
 VALUES
-	('John Doe', 1, 'johndoe@example.com'),
-	('AJ Soud', 200, 'ajsoud@example.com'),
-	('Zain Adil', 50, 'zainadil@example.com'),
-	('Syed Husain', 300, 'syedhusain@example.com'),
-	('Jun Too', 75, 'juntoo@example.com'),
-	('Robert Chadwick', 150, 'robertchadwick@example.com'),
-	('Sneha Poddar', 25, 'snehapoddar@example.com'),
-	('Zohaib Imam', 250, 'zohaibimam@example.com'),
-	('Isabel Zhao', 175, 'isabelzhao@example.com'),
-	('John Coleman', 125, 'johncoleman@example.com'),
-	('Kareem El-Sadi', 125, 'kareemelsadi@example.com'),
-	('Austin Sun', 275, 'austinsun@example.com'),
-	('Karan Gupta', 10, 'karangupta@example.com'),
-	('Michael Mancuso', 80, 'michaelmancuso@example.com'),
-	('Nicolae Sapoval', 90, 'nicolaesapoval@example.com'),
-	('Wil Thomason', 70, 'wilthomason@example.com'),
-	('Deepsh Jain', 60, 'deepshjain@example.com'),
-	('Alice Smith', 100, 'alicesmith@example.com'),
-	('Bob Johnson', 50, 'bobjohnson@example.com'),
-	('Charlie Brown', 200, 'charliebrown@example.com'),
-	('David Lee', 75, 'davidlee@example.com'),
-	('Emily Chen', 150, 'emilychen@example.com'),
-	('Frank Wang', 25, 'frankwang@example.com'),
-	('Grace Kim', 300, 'gracekim@example.com'),
-	('Henry Liu', 125, 'henryliu@example.com'),
-	('Isabella Davis', 175, 'isabelladavis@example.com'),
-	('Jackie Chan', 250, 'jackiechan@example.com'),
-	('Kevin Lee', 125, 'kevinlee@example.com'),
-	('Linda Nguyen', 275, 'lindanguyen@example.com'),
-	('Michael Brown', 10, 'michaelbrown@example.com'),
-	('Nancy Wilson', 80, 'nancywilson@example.com'),
-	('Oliver Green', 90, 'olivergreen@example.com'),
-	('Peter Kim', 70, 'peterkim@example.com'),
-	('Queenie Chen', 60, 'queeniechen@example.com'),
-	('Ryan Lee', 150, 'ryanlee@example.com'),
-	('Samantha Lee', 200, 'samanthalee@example.com'),
-	('Tommy Lee', 100, 'tommylee@example.com');
+	('Abigail Smith', 3890, 'abigailsmith@example.com'),
+	('AJ Soud', 2000, 'ajsoud@example.com'),
+	('Zain Adil', 500, 'zainadil@example.com'),
+	('Syed Husain', 3000, 'syedhusain@example.com'),
+	('Jun Too', 750, 'juntoo@example.com'),
+	('Robert Chadwick', 1500, 'robertchadwick@example.com'),
+	('Sneha Poddar', 250, 'snehapoddar@example.com'),
+	('Zohaib Imam', 2500, 'zohaibimam@example.com'),
+	('Isabel Zhao', 1750, 'isabelzhao@example.com'),
+	('John Coleman', 1250, 'johncoleman@example.com'),
+	('Kareem El-Sadi', 1250, 'kareemelsadi@example.com'),
+	('Austin Sun', 2750, 'austinsun@example.com'),
+	('Karan Gupta', 100, 'karangupta@example.com'),
+	('Michael Mancuso', 800, 'michaelmancuso@example.com'),
+	('Nicolae Sapoval', 900, 'nicolaesapoval@example.com'),
+	('Wil Thomason', 700, 'wilthomason@example.com'),
+	('Deepsh Jain', 600, 'deepshjain@example.com'),
+	('Alice Smith', 1000, 'alicesmith@example.com'),
+	('Bob Johnson', 500, 'bobjohnson@example.com'),
+	('Charlie Brown', 2000, 'charliebrown@example.com'),
+	('David Lee', 750, 'davidlee@example.com'),
+	('Emily Chen', 1500, 'emilychen@example.com'),
+	('Frank Wang', 250, 'frankwang@example.com'),
+	('Grace Kim', 3000, 'gracekim@example.com'),
+	('Henry Liu', 1250, 'henryliu@example.com'),
+	('Isabella Davis', 1750, 'isabelladavis@example.com'),
+	('Jackie Chan', 2500, 'jackiechan@example.com'),
+	('Kevin Lee', 1250, 'kevinlee@example.com'),
+	('Linda Nguyen', 2750, 'lindanguyen@example.com'),
+	('Michael Brown', 100, 'michaelbrown@example.com'),
+	('Nancy Wilson', 800, 'nancywilson@example.com'),
+	('Oliver Green', 900, 'olivergreen@example.com'),
+	('Peter Kim', 700, 'peterkim@example.com'),
+	('Queenie Chen', 600, 'queeniechen@example.com'),
+	('Ryan Lee', 1500, 'ryanlee@example.com'),
+	('Samantha Lee', 2000, 'samanthalee@example.com'),
+	('Tommy Lee', 1000, 'tommylee@example.com');
 
 INSERT INTO events
 	(user_id, name, date, start_time, end_time, description, carbon_points)
 SELECT id, 'Pick up prescription', CURRENT_DATE, "09:00", "09:30", 'Pick up prescription from the pharmacy.', 5
 FROM users
-WHERE name = 'John Doe'
+WHERE users.id = 1
 LIMIT 1;
 
 INSERT INTO events
 	(user_id, name, date, start_time, end_time, description, carbon_points)
 SELECT id, 'Do laundry', CURRENT_DATE, "09:30", "10:30", 'Do laundry.', 10
 FROM users
-WHERE name = 'John Doe'
+WHERE users.id = 1
 LIMIT 1;
 
 INSERT INTO events
 	(user_id, name, date, start_time, end_time, description, carbon_points)
-SELECT id, 'Go to the gym', CURRENT_DATE, "10:30", "11:30", 'Go to the gym.', 8
+SELECT id, 'Go to the gym', CURRENT_DATE, "10:30", "11:30", 'Go to the gym.', 80
 FROM users
-WHERE name = 'John Doe'
+WHERE users.id = 1
 LIMIT 1;
 
 INSERT INTO groups

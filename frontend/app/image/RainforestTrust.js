@@ -1,0 +1,1 @@
+export const RainforestTrust = require("../../assets/RainforestTrust.png");
