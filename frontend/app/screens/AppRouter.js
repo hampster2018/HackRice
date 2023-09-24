@@ -8,25 +8,8 @@ import { useSelector } from "react-redux";
 
 import CalendarScreen from "./AgendaScreen";
 import LeaderboardScreen from "./leaderboard/LeaderBoardScreen";
-
-const Home = () => {
-  const email = useSelector((state) => state.user.email);
-  const navigation = useNavigation();
-
-  const handleRecordPress = () => {
-    navigation.navigate("AudioRecording");
-  };
-
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Welcome, {email}!</Text>
-      <TouchableOpacity style={{ marginTop: 20 }} onPress={handleRecordPress}>
-        <AntDesign name="sound" size={24} color="black" />
-        <Text>Record Audio</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
+import Home from "./Home";
+// Sample Components
 
 // const Leaderboard = () => {
 //   return (

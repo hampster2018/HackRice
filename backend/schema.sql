@@ -3,7 +3,8 @@ IF NOT EXISTS users
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 	name TEXT NOT NULL,
-	points INTEGER NOT NULL DEFAULT 0
+	points INTEGER NOT NULL DEFAULT 0,
+	email TEXT UNIQUE
 );
 
 CREATE TABLE
@@ -36,5 +37,14 @@ IF NOT EXISTS events
 	[date] DATE NOT NULL,
 	[user_id] INTEGER NOT NULL REFERENCES users
 (id),
-	[carbon_points] INTEGER
+	[carbon_points] INTEGER,
+	[completed] BOOLEAN DEFAULT 0
+);
+
+CREATE TABLE
+IF NOT EXISTS carbon_samples
+(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	[description] TEXT NOT NULL,
+	[carbon_points] INTEGER NOT NULL
 );
