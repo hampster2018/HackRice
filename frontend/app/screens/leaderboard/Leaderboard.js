@@ -4,15 +4,17 @@ import { StyleSheet, View } from "react-native";
 import LeaderboardEntry from "./LeaderboardEntry";
 import Podium from "./Podium";
 import { API_PREFIX } from "../../utils/api.utils";
+import { useSelector } from "react-redux";
 
 export default function Leaderboard({ groupId }) {
   const [entries, setEntries] = useState([]);
+  const id = useSelector((state) => state.user.id);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
         const response = await fetch(
-          `${API_PREFIX}/get_group_leaderboard/${groupId}/1`
+          `${API_PREFIX}/get_group_leaderboard/${groupId}/` + id,
         );
         const data = await response.json();
         setEntries(data);

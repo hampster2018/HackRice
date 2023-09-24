@@ -10,11 +10,11 @@ import MaskedView from '@react-native-masked-view/masked-view';
 import { Image } from 'expo-image';
 import get_points from '../api/get_points';
 import get_name from '../api/get_name';
+import { useSelector } from 'react-redux';
 
 export default function App() {
   const [height, setHeight] = useState('');
   const [width, setWidth] = useState('');
-
   const x = Math.random();
   const c1 = (Math.random() * 1);
   const c2 = (Math.random() * 1);
@@ -34,7 +34,7 @@ export default function App() {
   const [satPoints, setSatPoints] = useState(0);
   const [maxDailyPoints, setMaxDailyPoints] = useState(0);
 
-
+  console.log(useSelector((state) => state.user.id));
   useEffect(() => {
     setHeight(Dimensions.get('window').height);
     setWidth(Dimensions.get('window').width);

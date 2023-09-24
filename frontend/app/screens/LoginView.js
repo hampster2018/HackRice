@@ -8,16 +8,22 @@ import {
   TextInput,
   TouchableWithoutFeedback,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 
-import { setEmail } from "../reducers/UserReducer";
+import get_events from "../api/get_events";
+import login_user from "../api/login_user";
+import { setEmail, setId, setEvents } from "../reducers/UserReducer";
 
 const LoginView = ({ navigation }) => {
   const [emailValue, setEmailValue] = useState("");
 
   const dispatch = useDispatch();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    const id = await login_user(emailValue);
+    const events = await get_events(id);
+    dispatch(setId(id));
+    dispatch(setEvents(events));
     dispatch(setEmail(emailValue));
     navigation.navigate("Main", { screen: "Home" });
   };

@@ -1,13 +1,17 @@
 import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome5 } from '@expo/vector-icons';
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import React from "react";
 
 import CalendarScreen from "./AgendaScreen";
+import DonatePoints from "./DonatePoints";
+import DonateScreen from "./DonateScreen";
 import Event from "./Event";
 import GainedPoints from "./GainedPoints";
 import Home from "./Home";
 import LeaderboardScreen from "./leaderboard/LeaderBoardScreen";
 import SmartHome from "./SmartHome";
+
 const Drawer = createDrawerNavigator();
 
 const AppRouter = ({ route }) => {
@@ -54,6 +58,22 @@ const AppRouter = ({ route }) => {
       <Drawer.Screen
         name="Event"
         component={Event}
+        options={{
+          drawerItemStyle: { height: 0 },
+        }}
+      />
+      <Drawer.Screen
+        name="Donate to Charity"
+        component={DonateScreen}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <FontAwesome5 name="donate" size={24} color="black" />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Commit Donation"
+        component={DonatePoints}
         options={{
           drawerItemStyle: { height: 0 },
         }}
