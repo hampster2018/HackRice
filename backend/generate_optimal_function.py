@@ -43,11 +43,11 @@ def generate_schedule(transcription: str) -> List[object]:
                                     "type": "string",
                                     "description": "The description of the event.",
                                 },
-                                "military_start_time": {
+                                "military_start_time_colon_separated": {
                                     "type": "string",
                                     "description": "The start time of the event in military time such as 20:00 or 08:30. Do not put AM or PM. Choose a realistic start time.",
                                 },
-                                "military_end_time": {
+                                "military_end_time_colon_separated": {
                                     "type": "string",
                                     "description": "The end time of the event in military time such as 21:00 or 09:30. Do not put AM or PM. Choose a realistic end time considering the start time and the description of the event. The end time must be after the start time.",
                                 },
