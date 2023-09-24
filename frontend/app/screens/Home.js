@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -7,27 +8,96 @@ import { BarChart } from 'react-native-gifted-charts';
 import React, {useState, useEffect} from 'react';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Image } from 'expo-image';
+import get_points from '../api/get_points';
+import get_name from '../api/get_name';
 import { useSelector } from 'react-redux';
 
 export default function App() {
   const [height, setHeight] = useState('');
   const [width, setWidth] = useState('');
+  const x = Math.random();
+  const c1 = (Math.random() * 1);
+  const c2 = (Math.random() * 1);
+  const c3 = (Math.random() * 1);
+
+  const [curPoints, setPoints] = useState(0);
+  const [userName, setName] = useState('');
+  const [weeklyPoints, setWeeklyPoints] = useState('');
+  const [totalPoints, setTotalPoints] = useState('');
+
+  const [sunPoints, setSunPoints] = useState('');
+  const [monPoints, setMonPoints] = useState('');
+  const [tuePoints, setTuePoints] = useState('');
+  const [wedPoints, setWedPoints] = useState(0);
+  const [thurPoints, setThurPoints] = useState(0);
+  const [friPoints, setFriPoints] = useState(0);
+  const [satPoints, setSatPoints] = useState(0);
+  const [maxDailyPoints, setMaxDailyPoints] = useState(0);
+
   console.log(useSelector((state) => state.user.id));
   useEffect(() => {
     setHeight(Dimensions.get('window').height);
     setWidth(Dimensions.get('window').width);
+    get_points(setPoints, 1);
+    get_name(setName, 1);
+    if(x < 0.5){
+      setWeeklyPoints(450);
+    } else {
+      setWeeklyPoints(345);
+    }
+    setTotalPoints(Math.ceil(Math.random() * 5000) + 450 + curPoints);
+    maLi();
+    // setSunPoints(weeklyPoints);
   }, []);
 
+  const maLi = () => {
+    console.log(x)
+    if(x < 0.5){
+      setSunPoints(95);
+      setMonPoints(25);
+      setTuePoints(0);
+      setWedPoints(125);
+      setThurPoints(45);
+      setFriPoints(65);
+      setSatPoints(95);
+    } else {
+      setSunPoints(25);
+      setMonPoints(95);
+      setTuePoints(45);
+      setWedPoints(75);
+      setThurPoints(45);
+      setFriPoints(0);
+      setSatPoints(15);
+    }
+
+    if(x < 0.33) {
+      setHM1(true);
+      setHM2(false);
+      setHM3(false);
+    } else if (x < 0.66) {
+      setHM2(true);
+      setHM1(false);
+      setHM3(false);
+    } else {
+      setHM3(true);
+      setHM1(false);
+      setHM2(false);
+    }
+  }
+  
   const [shouldShow, setShouldShow] = useState(false);
+  const [hm1, setHM1] = useState(false);
+  const [hm2, setHM2] = useState(false);
+  const [hm3, setHM3] = useState(false);
     
   const barData = [
-    {value: 230,label: 'Sun.',frontColor: '#4ABFF4',topLabelComponent: () => (<Text style={{color: '#4ABFF4', fontWeight: 'bold', fontSize: 18, marginBottom: 6}}>230</Text>),},
-    {value: 180,label: 'Mon.',frontColor: '#79C3DB',topLabelComponent: () => (<Text style={{color: '#79C3DB', fontWeight: 'bold', fontSize: 18, marginBottom: 6}}>180</Text>),},
-    {value: 195,label: 'Tue.',frontColor: '#28B2B3',topLabelComponent: () => (<Text style={{color: '#28B2B3', fontWeight: 'bold', fontSize: 18, marginBottom: 6}}>195</Text>),},
-    {value: 250,label: 'Wed.',frontColor: '#4ADDBA',topLabelComponent: () => (<Text style={{color: '#4ADDBA', fontWeight: 'bold', fontSize: 18, marginBottom: 6}}>250</Text>),},
-    {value: 200,label: 'Thu.',frontColor: '#91E3E3',topLabelComponent: () => (<Text style={{color: '#91E3E3', fontWeight: 'bold', fontSize: 18, marginBottom: 6}}>200</Text>),},
-    {value: 95,label: 'Fri.',frontColor: '#91e3ae',topLabelComponent: () => (<Text style={{color: '#91e3ae', fontWeight: 'bold', fontSize: 18, marginBottom: 6}}>95</Text>),},
-    {value: 320,label: 'Sat.',frontColor: '#6dc9a7',topLabelComponent: () => (<Text style={{color: '#6dc9a7', fontWeight: 'bold', fontSize: 18, marginBottom: 6}}>320</Text>),},
+    {value: sunPoints, label: 'Sun.',frontColor: '#4ABFF4',topLabelComponent: () => (<Text style={{color: '#4ABFF4', fontWeight: 'bold', fontSize: 18, marginBottom: 6}}>{sunPoints}</Text>),},
+    {value: monPoints,label: 'Mon.',frontColor: '#79C3DB',topLabelComponent: () => (<Text style={{color: '#79C3DB', fontWeight: 'bold', fontSize: 18, marginBottom: 6}}>{monPoints}</Text>),},
+    {value: tuePoints,label: 'Tue.',frontColor: '#28B2B3',topLabelComponent: () => (<Text style={{color: '#28B2B3', fontWeight: 'bold', fontSize: 18, marginBottom: 6}}>{tuePoints}</Text>),},
+    {value: wedPoints,label: 'Wed.',frontColor: '#4ADDBA',topLabelComponent: () => (<Text style={{color: '#4ADDBA', fontWeight: 'bold', fontSize: 18, marginBottom: 6}}>{wedPoints}</Text>),},
+    {value: thurPoints,label: 'Thu.',frontColor: '#91E3E3',topLabelComponent: () => (<Text style={{color: '#91E3E3', fontWeight: 'bold', fontSize: 18, marginBottom: 6}}>{thurPoints}</Text>),},
+    {value: friPoints,label: 'Fri.',frontColor: '#91e3ae',topLabelComponent: () => (<Text style={{color: '#91e3ae', fontWeight: 'bold', fontSize: 18, marginBottom: 6}}>{friPoints}</Text>),},
+    {value: satPoints,label: 'Sat.',frontColor: '#6dc9a7',topLabelComponent: () => (<Text style={{color: '#6dc9a7', fontWeight: 'bold', fontSize: 18, marginBottom: 6}}>{satPoints}</Text>),},
     ];
 
   return (
@@ -37,7 +107,7 @@ export default function App() {
     <View>
       <View style={styles.welMsgCon}>
         <MaskedView
-          style={{ height: '50%'}}
+          style={{ height: '50%', width: '100%'}}
           maskElement={<Text style={styles.welMsgTxt}>Welcome back,</Text>}
         >
           <LinearGradient
@@ -49,8 +119,8 @@ export default function App() {
         </MaskedView>
 
         <MaskedView
-          style={{ height: '50%'}}
-          maskElement={<Text style={styles.welMsgTxt2}>John Doe!</Text>}
+          style={{ height: '50%', width: '100%'}}
+          maskElement={<Text style={styles.welMsgTxt2}>{userName}</Text>}
         >
           <LinearGradient
             colors={['#00D4B0', '#146CF6']}
@@ -61,8 +131,9 @@ export default function App() {
         </MaskedView>
       </View>
 
+
       <View style={styles.buttonCont}>
-      <TouchableOpacity style={styles.buttonCont, {marginTop: 25}} onPress={() => setShouldShow(!shouldShow)}>
+      <TouchableOpacity style={styles.buttonCont, {marginTop: 25}}>
         <View style={styles.button}>
           <Text style={styles.butText}>Generate Schedule</Text>
         </View>
@@ -159,7 +230,7 @@ export default function App() {
         <Text style={{fontSize: '40%', textAlign: 'center', fontWeight: '600'}}>You have</Text>
         <MaskedView
           style={{ height: 90}}
-          maskElement={<Text style={{fontSize: 100, fontWeight: 'bold', textAlign: 'center'}}>10,050</Text>}
+          maskElement={<Text style={{fontSize: 100, fontWeight: 'bold', textAlign: 'center'}}>{curPoints}</Text>}
         >
           <LinearGradient
             colors={['#00D4B0', '#146CF6']}
@@ -189,7 +260,7 @@ export default function App() {
       <View style={styles.pointCont}>
         <MaskedView
           style={{ height: 90}}
-          maskElement={<Text style={{fontSize: 100, fontWeight: 'bold', textAlign: 'center'}}>1,470</Text>}
+          maskElement={<Text style={{fontSize: 100, fontWeight: 'bold', textAlign: 'center'}}>{weeklyPoints}</Text>}
         >
           <LinearGradient
             colors={['#146CF6', '#00D4B0']}
@@ -246,7 +317,7 @@ export default function App() {
         {/* <Text style={styles.subheadTxt2}>You've earned</Text> */}
         <MaskedView
           style={{ height: 90}}
-          maskElement={<Text style={{fontSize: 100, fontWeight: 'bold', textAlign: 'center'}}>32,340</Text>}
+          maskElement={<Text style={{fontSize: 100, fontWeight: 'bold', textAlign: 'center'}}>{totalPoints}</Text>}
         >
           <LinearGradient
             colors={['#00D4B0', '#146CF6']}
@@ -284,8 +355,251 @@ export default function App() {
                 <Text style={styles.dayText2}>Wed</Text>
                 <Text style={styles.dayText2}>Fri</Text>
               </View>
-              
-              <View style={styles.rowCon}>
+
+              {hm1 ? 
+                (
+                  <View style={styles.rowCon}>
+                <View style={styles.contRow}>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell4}></View>
+                </View>
+
+                <View style={styles.contRow}>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell4}></View>
+                </View>
+
+                <View style={styles.contRow}>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                </View>
+
+                <View style={styles.contRow}>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                </View>
+
+                <View style={styles.contRow}>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell1}></View>
+                </View>
+
+                <View style={styles.contRow}>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                </View>
+                
+              </View>
+                ) 
+              : null}
+
+              {hm2 ? 
+                (
+                  <View style={styles.rowCon}>
                 <View style={styles.contRow}>
                   <View style={styles.conCell1}></View>
                   <View style={styles.conCell2}></View>
@@ -521,6 +835,486 @@ export default function App() {
                 </View>
                 
               </View>
+                ) 
+              : null}
+
+              {hm3 ? 
+                (
+                  <View style={styles.rowCon}>
+                    <View style={styles.contRow}>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                </View>
+
+                <View style={styles.contRow}>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell1}></View>
+                </View>
+
+                <View style={styles.contRow}>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                </View>
+
+                <View style={styles.contRow}>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                </View>
+
+                <View style={styles.contRow}>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell4}></View>
+                </View>
+                
+                <View style={styles.contRow}>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                </View>
+                
+              </View>
+                ) 
+              : null}
+              
+              {/* <View style={styles.rowCon}>
+                <View style={styles.contRow}>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell5}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell1}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell3}></View>
+                  <View style={styles.conCell4}></View>
+                  <View style={styles.conCell2}></View>
+                  <View style={styles.conCell5}></View>
+                </View>
+
+                <View style={styles.contRow}>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                </View>
+
+                <View style={styles.contRow}>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                </View>
+
+                <View style={styles.contRow}>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                </View>
+
+                <View style={styles.contRow}>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                </View>
+
+                <View style={styles.contRow}>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell1}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell2}></View>
+                    <View style={styles.conCell4}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCell3}></View>
+                    <View style={styles.conCell5}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                    <View style={styles.conCelle}></View>
+                </View>
+                
+              </View> */}
             </View>
             
           </View>
@@ -616,7 +1410,7 @@ const styles = StyleSheet.create({
 
   welMsgTxt2: {
     color: '#000022',
-    fontSize: '80%',
+    fontSize: '75%',
     fontWeight: 'bold'
   },
 
@@ -1097,7 +1891,7 @@ const styles = StyleSheet.create({
   },
 
   cardDate2:{
-    color: '#384750',
+    color: '#00d4b0',
     fontSize: '25%',
     fontWeight: 'bold',
     // borderWidth: 1,
