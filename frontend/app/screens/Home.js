@@ -36,7 +36,7 @@ export default function App() {
     <View>
       <View style={styles.welMsgCon}>
         <MaskedView
-          style={{ height: 70}}
+          style={{ height: '50%'}}
           maskElement={<Text style={styles.welMsgTxt}>Welcome back,</Text>}
         >
           <LinearGradient
@@ -48,7 +48,7 @@ export default function App() {
         </MaskedView>
 
         <MaskedView
-          style={{ height: 70}}
+          style={{ height: '50%'}}
           maskElement={<Text style={styles.welMsgTxt2}>John Doe!</Text>}
         >
           <LinearGradient
@@ -151,7 +151,7 @@ export default function App() {
       </View>
 
       <View>
-        <Text style={styles.quickTxt}>You're doing amazing, John! With each task you complete, you're contributing to a clean world!</Text>
+        <Text style={styles.quickTxt}>You're doing <Text style={{color:'#146CF6'}}>amazing</Text>, John! With each task you complete, you're contributing to <Text style={{color:'#00D4B0'}}>a clean world!</Text></Text>
       </View>
 
       <View style={styles.curPtsCont}>
@@ -181,7 +181,9 @@ export default function App() {
         <Text style={{fontWeight: '400', textAlign: 'center', fontSize: 27, marginTop: 25, marginBottom: 30}}>Keep up the <Text style={{color: '#00D4B0', fontWeight: 'bold'}}>green</Text> work!</Text>
       </View>
 
-      
+      <View>
+        <Text style={styles.currSum}>Let's see your current trends...</Text>
+      </View>
       
       <View style={styles.pointCont}>
         <MaskedView
@@ -589,6 +591,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingTop: '12%',
     paddingLeft: '5%',
+    height: 250
     // backgroundColor: 'red'
   },
 
@@ -620,6 +623,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: '30%',
     paddingLeft: '5%'
+  },
+
+  currSum: {
+    // borderWidth: 1,
+    fontWeight: 'bold',
+    fontSize: 40,
+    textAlign: 'center',
+    marginBottom: 20
   },
 
   leg: {
@@ -927,10 +938,12 @@ const styles = StyleSheet.create({
   },
 
   quickTxt:{
-    fontWeight: 'bold',
+    fontWeight: '600',
     fontSize: 25,
     marginLeft: '5%',
-    marginRight: '5%'
+    marginRight: '5%',
+    paddingTop: 120,
+    textAlign: 'center',
   },
 
   ptsTxt2: {
@@ -1013,7 +1026,8 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     textAlign: 'center',
     height: 600,
-    paddingTop: 150
+    paddingTop: 250,
+    marginBottom: 150
   },
 
   butText:{
@@ -1023,7 +1037,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: '#2D728F',
+    backgroundColor: '#09a5d0',
     width: 300,
     justifyContent: 'center',
     alignItems: 'center',
@@ -1062,7 +1076,7 @@ const styles = StyleSheet.create({
   },
 
   cardPoints: {
-    color: '#384750',
+    color: '#09a5d0',
     fontSize: '35%',
     fontWeight: '600',
     paddingBottom: 20
@@ -1072,7 +1086,7 @@ const styles = StyleSheet.create({
   },
 
   cardDate:{
-    color: '#384750',
+    color: '#00d4b0',
     fontSize: '25%',
     fontWeight: 'bold',
     // borderWidth: 1,
@@ -1094,9 +1108,9 @@ const styles = StyleSheet.create({
   },
   
   cardTitle: {
-    color: 'black',
+    color: '#146CF6',
     fontWeight:'bold',
-    fontSize: '45%',
+    fontSize: '35%',
     fontWeight: 'bold',
     textAlign: 'center'
     // textShadowColor: 'rgba(255, 255, 255, 0.5)',

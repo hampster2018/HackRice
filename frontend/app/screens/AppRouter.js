@@ -7,6 +7,16 @@ import Event from "./Event";
 import GainedPoints from "./GainedPoints";
 import Home from "./Home";
 import LeaderboardScreen from "./leaderboard/LeaderBoardScreen";
+import SmartHome from "./SmartHome";
+// Sample Components
+
+// const Leaderboard = () => {
+//   return (
+//     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+//       <Text>Leaderboard Screen</Text>
+//     </View>
+//   );
+// };
 
 // App Router using Stack Navigator
 const Drawer = createDrawerNavigator();
