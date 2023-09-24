@@ -53,7 +53,7 @@ def generate_schedule(transcription: str) -> List[object]:
                                 },
                                 "carbon_points": {
                                     "type": "number",
-                                    "description": "This number represents the carbon footprint of the event. The lower the number, the better. The carbon footprint must be a positive integer.",
+                                    "description": """Generate a positive integer representing the carbon footprint of the activity.""",
                                 },
                             },
                         },
@@ -71,8 +71,6 @@ def generate_schedule(transcription: str) -> List[object]:
         model=model, messages=messages, functions=functions, function_call=function_call
     )
 
-    # print(completion)
-
     event_list = json.loads(completion.choices[0].message.function_call.arguments)[
         "events"
     ]
@@ -88,8 +86,6 @@ def generate_schedule(transcription: str) -> List[object]:
     completion = openai.ChatCompletion.create(
         model=model, messages=messages, functions=functions, function_call=function_call
     )
-
-    # print(completion)
 
     event_list = json.loads(completion.choices[0].message.function_call.arguments)[
         "events"

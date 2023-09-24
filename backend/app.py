@@ -362,12 +362,27 @@ def complete_event():
     event_name = request.form["event_name"]
     completed = request.form["completed"]
     user_id = request.form["user_id"]
+    carbon_points = request.form["carbon_points"]
 
     cur = get_db().cursor()
     cur.execute(
-        "UPDATE events SET completed = ? WHERE name = ? AND user_id = ?",
-        (completed, event_name, user_id),
+        "UPDATE events SET completed = ?, carbon_points = ? WHERE name = ? AND user_id = ?",
+        (
+            completed,
+            carbon_points,
+            event_name,
+            user_id,
+        ),
     )
+
+    # also give user points
+    cur.execute("SELECT points FROM users WHERE id = ?", (user_id,))
+    points = cur.fetchone()[0]
+    if completed == "1":
+        points += int(carbon_points)
+    else:
+        points -= int(carbon_points)
+    cur.execute("UPDATE users SET points = ? WHERE id = ?", (points, user_id))
     get_db().commit()
 
     return f"Event '{event_name}' set to {completed}."
@@ -378,6 +393,6 @@ def get_userid(email):
     # edit the email to escape the @ symbol
     cur = get_db().cursor()
     replaced_email = email
-    cur.execute(f"SELECT id FROM users WHERE email = ?", [replaced_email])
+    cur.execute("SELECT id FROM users WHERE email = ?", [replaced_email])
     output = cur.fetchone()[0]
     return f"{output}"

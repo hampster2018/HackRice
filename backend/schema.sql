@@ -40,3 +40,11 @@ IF NOT EXISTS events
 	[carbon_points] INTEGER,
 	[completed] BOOLEAN DEFAULT 0
 );
+
+CREATE TABLE
+IF NOT EXISTS carbon_samples
+(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	[description] TEXT NOT NULL,
+	[carbon_points] INTEGER NOT NULL
+);
