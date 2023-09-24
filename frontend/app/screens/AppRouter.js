@@ -51,7 +51,7 @@ const AppRouter = ({ route }) => {
         component={SmartHome}
         options={{
           drawerIcon: ({ color, size }) => (
-            <AntDesign name="barschart" size={size} color={color} />
+            <AntDesign name="dashboard" size={size} color={color} />
           ),
         }}
       />

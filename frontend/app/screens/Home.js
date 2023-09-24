@@ -10,6 +10,7 @@ import MaskedView from '@react-native-masked-view/masked-view';
 import { Image } from 'expo-image';
 import get_points from '../api/get_points';
 import get_name from '../api/get_name';
+import get_available_points from '../api/get_available_points';
 import { useSelector } from 'react-redux';
 
 export default function App() {
@@ -20,10 +21,10 @@ export default function App() {
   const c2 = (Math.random() * 1);
   const c3 = (Math.random() * 1);
 
-  const [curPoints, setPoints] = useState(0);
+  const [totalPoints, setPoints] = useState(0);
   const [userName, setName] = useState('');
   const [weeklyPoints, setWeeklyPoints] = useState('');
-  const [totalPoints, setTotalPoints] = useState('');
+  const [curPoints, setTotalPoints] = useState('');
 
   const [sunPoints, setSunPoints] = useState('');
   const [monPoints, setMonPoints] = useState('');
@@ -39,13 +40,13 @@ export default function App() {
     setHeight(Dimensions.get('window').height);
     setWidth(Dimensions.get('window').width);
     get_points(setPoints, 1);
+    get_available_points(setTotalPoints, 1);
     get_name(setName, 1);
     if(x < 0.5){
       setWeeklyPoints(450);
     } else {
       setWeeklyPoints(345);
     }
-    setTotalPoints(Math.ceil(Math.random() * 5000) + 450 + curPoints);
     maLi();
     // setSunPoints(weeklyPoints);
   }, []);
