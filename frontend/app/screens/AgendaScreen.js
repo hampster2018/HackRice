@@ -3,15 +3,14 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Agenda } from "react-native-calendars";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { API_PREFIX } from "../utils/api.utils";
 
 const AgendaScreen = () => {
   const [items, setItems] = React.useState({});
 
   React.useEffect(() => {
     async function fetchData() {
-      const response = await fetch(
-        "https://highly-boss-dodo.ngrok-free.app/get_events"
-      );
+      const response = await fetch(`${API_PREFIX}/get_events`);
       const data = await response.json();
       const eventsByDate = data.reduce((acc, event) => {
         const date = event.date;

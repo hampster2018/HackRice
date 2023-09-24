@@ -8,6 +8,7 @@ import AppRouter from "./app/screens/AppRouter.js";
 import Event from "./app/screens/Event.js";
 import GainedPoints from "./app/screens/GainedPoints.js";
 import LoginView from "./app/screens/LoginView.js";
+import RecordScreen from "./app/screens/audio-input/RecordScreen.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,11 @@ function App() {
             <Stack.Screen
               name="GainedPoints"
               component={GainedPoints}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AudioRecording"
+              component={RecordScreen}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

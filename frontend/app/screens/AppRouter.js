@@ -1,20 +1,29 @@
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/core";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import React from "react";
 import { Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 
 import CalendarScreen from "./AgendaScreen";
 import LeaderboardScreen from "./leaderboard/LeaderBoardScreen";
 
-// Sample Components
-
 const Home = () => {
   const email = useSelector((state) => state.user.email);
+  const navigation = useNavigation();
+
+  const handleRecordPress = () => {
+    navigation.navigate("AudioRecording");
+  };
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Welcome, {email}!</Text>
+      <TouchableOpacity style={{ marginTop: 20 }} onPress={handleRecordPress}>
+        <AntDesign name="sound" size={24} color="black" />
+        <Text>Record Audio</Text>
+      </TouchableOpacity>
     </View>
   );
 };
