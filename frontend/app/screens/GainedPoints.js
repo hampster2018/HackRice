@@ -15,12 +15,11 @@ function GainedPoints({ route, navigation }) {
     <View style={styles.container}>
       <View style={styles.animationContainer}>
         <Pressable
-          onPress={() =>
+          onPress={() => {
             navigation.push("Main", {
               screen: "Calendar",
-              event: route.params.event,
-            })
-          }
+            });
+          }}
         >
           <LottieView
             autoPlay

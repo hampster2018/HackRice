@@ -7,11 +7,12 @@ import { BarChart } from 'react-native-gifted-charts';
 import React, {useState, useEffect} from 'react';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { Image } from 'expo-image';
+import { useSelector } from 'react-redux';
 
 export default function App() {
   const [height, setHeight] = useState('');
   const [width, setWidth] = useState('');
-
+  console.log(useSelector((state) => state.user.id));
   useEffect(() => {
     setHeight(Dimensions.get('window').height);
     setWidth(Dimensions.get('window').width);
